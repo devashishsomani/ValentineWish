@@ -808,6 +808,10 @@ body {
     max-width: min(58%, 300px);
     width: min(58%, 300px);
     height: min(58%, 300px);
+    border-radius: 50%;
+    object-fit: cover;
+    -webkit-mask-image: radial-gradient(circle, black 65%, transparent 100%);
+    mask-image: radial-gradient(circle, black 65%, transparent 100%);
   }
 
   .wish-hbd {
@@ -904,6 +908,10 @@ body {
     max-width: min(52%, 240px);
     width: min(52%, 240px);
     height: min(52%, 240px);
+    border-radius: 50%;
+    object-fit: cover;
+    -webkit-mask-image: radial-gradient(circle, black 65%, transparent 100%);
+    mask-image: radial-gradient(circle, black 65%, transparent 100%);
   }
 
   .wish-hbd {
@@ -979,6 +987,10 @@ body {
     max-width: min(50%, 200px);
     width: min(50%, 200px);
     height: min(50%, 200px);
+    border-radius: 50%;
+    object-fit: cover;
+    -webkit-mask-image: radial-gradient(circle, black 65%, transparent 100%);
+    mask-image: radial-gradient(circle, black 65%, transparent 100%);
   }
 
   .wish-hbd {
@@ -1018,7 +1030,7 @@ body {
   }
 }
 
-/* Mobile landscape — reduce size of decorative elements */
+/* Mobile landscape — reduce size and reposition hearts for compact vertical space */
 @media screen and (orientation: landscape) and (max-height: 500px) {
   .baloons img {
     width: min(120px, 30vmin) !important;
@@ -1027,6 +1039,17 @@ body {
   .eight svg {
     width: clamp(14px, 4vmin, 20px) !important;
   }
+
+  /* Reposition hearts for landscape - cluster around center where card appears */
+  .eight svg:nth-child(1) { top: 20vh; left: 12vw; }
+  .eight svg:nth-child(2) { top: 30vh; left: 42vw; }
+  .eight svg:nth-child(3) { top: 40vh; left: 18vw; }
+  .eight svg:nth-child(4) { top: 50vh; left: 65vw; }
+  .eight svg:nth-child(5) { top: 60vh; left: 15vw; }
+  .eight svg:nth-child(6) { top: 35vh; left: 78vw; }
+  .eight svg:nth-child(7) { top: 55vh; left: 72vw; }
+  .eight svg:nth-child(8) { top: 65vh; left: 48vw; }
+  .eight svg:nth-child(9) { top: 25vh; left: 82vw; }
 }
 
 /* Mobile portrait — adjust heart positions to fit better around card */
@@ -1035,13 +1058,30 @@ body {
     width: clamp(18px, 5vmin, 24px) !important;
   }
 
-  .eight svg:nth-child(1) { top: 18vh; left: 5vw; }
-  .eight svg:nth-child(2) { top: 28vh; left: 48vw; }
-  .eight svg:nth-child(3) { top: 38vh; left: 12vw; }
-  .eight svg:nth-child(4) { top: 48vh; left: 75vw; }
-  .eight svg:nth-child(5) { top: 58vh; left: 8vw; }
-  .eight svg:nth-child(6) { top: 43vh; left: 88vw; }
-  .eight svg:nth-child(7) { top: 63vh; left: 82vw; }
-  .eight svg:nth-child(8) { top: 68vh; left: 45vw; }
-  .eight svg:nth-child(9) { top: 33vh; left: 92vw; }
+  .eight svg:nth-child(1) { top: 20vh; left: 6vw; }
+  .eight svg:nth-child(2) { top: 30vh; left: 50vw; }
+  .eight svg:nth-child(3) { top: 40vh; left: 14vw; }
+  .eight svg:nth-child(4) { top: 50vh; left: 78vw; }
+  .eight svg:nth-child(5) { top: 60vh; left: 10vw; }
+  .eight svg:nth-child(6) { top: 45vh; left: 86vw; }
+  .eight svg:nth-child(7) { top: 65vh; left: 80vw; }
+  .eight svg:nth-child(8) { top: 70vh; left: 48vw; }
+  .eight svg:nth-child(9) { top: 35vh; left: 90vw; }
+}
+
+/* Small phones (360px and under) - tighter heart positioning */
+@media screen and (orientation: portrait) and (max-width: 380px) {
+  .eight svg {
+    width: clamp(16px, 4.5vmin, 22px) !important;
+  }
+
+  .eight svg:nth-child(1) { top: 22vh; left: 8vw; }
+  .eight svg:nth-child(2) { top: 32vh; left: 52vw; }
+  .eight svg:nth-child(3) { top: 42vh; left: 16vw; }
+  .eight svg:nth-child(4) { top: 52vh; left: 76vw; }
+  .eight svg:nth-child(5) { top: 62vh; left: 12vw; }
+  .eight svg:nth-child(6) { top: 47vh; left: 84vw; }
+  .eight svg:nth-child(7) { top: 67vh; left: 78vw; }
+  .eight svg:nth-child(8) { top: 72vh; left: 50vw; }
+  .eight svg:nth-child(9) { top: 37vh; left: 88vw; }
 }

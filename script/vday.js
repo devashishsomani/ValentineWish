@@ -181,6 +181,9 @@ let lastMessages = []  // Track last few messages to avoid repetition
 let justClicked = false  // Prevent immediate runaway after click
 let justMoved = false    // Prevent immediate runaway after button moves
 let lastRunAwayTime = 0  // Track last time runAway was called to prevent rapid consecutive triggers
+let lastCursorX = 0      // Track cursor position to detect intentional movement
+let lastCursorY = 0
+let cursorMoved = true   // Track if cursor has moved since last interaction
 
 const STICK_FIGURE_WARNING = "⚠️ Last chance! The little buddy is coming... 😊🎁💕"
 
@@ -379,18 +382,45 @@ function swapGif(src) {
     }, 200)
 }
 
+function trackCursorMovement(e) {
+    // Track cursor position and detect movement
+    const deltaX = Math.abs(e.clientX - lastCursorX)
+    const deltaY = Math.abs(e.clientY - lastCursorY)
+
+    // Consider cursor "moved" if it moved more than 5 pixels
+    if (deltaX > 5 || deltaY > 5) {
+        cursorMoved = true
+        lastCursorX = e.clientX
+        lastCursorY = e.clientY
+    }
+}
+
+function handleMouseEnterRunaway(e) {
+    // Only trigger runAway if cursor actually moved to the button
+    // If cursorMoved is false, it means button moved under stationary cursor
+    if (!cursorMoved) return
+
+    runAway()
+
+    // Reset cursor moved flag after triggering
+    cursorMoved = false
+}
+
 function enableRunaway() {
     if (!noBtn) return
     // Slower, smoother glide when the No button runs away from hover/touch
     noBtn.style.transition = 'left 2s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+
+    // Track cursor movement globally to detect intentional hover
+    document.addEventListener('mousemove', trackCursorMovement)
 
     // Add a delay before activating listeners to prevent immediate trigger
     // This prevents the button from moving while user's finger/cursor is still over it from the click
     setTimeout(() => {
         if (noButtonGone) return
         runawayListenersActive = true
-        // Use mouseenter instead of mouseover - fires once when entering, not continuously
-        noBtn.addEventListener('mouseenter', runAway)
+        // Use custom handler that checks for intentional cursor movement
+        noBtn.addEventListener('mouseenter', handleMouseEnterRunaway)
         // For mobile: use a wrapper to ensure touch is intentional
         noBtn.addEventListener('touchstart', handleTouchRunaway, { passive: false })
     }, 500)  // Increased delay to 500ms to ensure user has lifted finger
@@ -403,14 +433,18 @@ function handleTouchRunaway(e) {
 
     // Get the touch point
     const touch = e.touches[0]
+    if (!touch) return
+
     const rect = noBtn.getBoundingClientRect()
 
     // Verify the touch is actually within the button bounds
+    // Add small tolerance for fat finger touches on mobile
+    const tolerance = 5
     const touchX = touch.clientX
     const touchY = touch.clientY
 
-    if (touchX >= rect.left && touchX <= rect.right &&
-        touchY >= rect.top && touchY <= rect.bottom) {
+    if (touchX >= rect.left - tolerance && touchX <= rect.right + tolerance &&
+        touchY >= rect.top - tolerance && touchY <= rect.bottom + tolerance) {
         // Prevent default to avoid any scroll behavior
         e.preventDefault()
         runAway()
@@ -421,8 +455,9 @@ function disableRunaway() {
     if (!noBtn || !runawayListenersActive) return
     runawayListenersActive = false
     noBtn.style.transition = 'none'
-    noBtn.removeEventListener('mouseenter', runAway)
+    noBtn.removeEventListener('mouseenter', handleMouseEnterRunaway)
     noBtn.removeEventListener('touchstart', handleTouchRunaway)
+    document.removeEventListener('mousemove', trackCursorMovement)
 }
 
 function runAway() {
@@ -449,21 +484,33 @@ function runAway() {
     const cooldown = chaseActive ? 1500 : 800
     setTimeout(() => { justMoved = false }, cooldown)
 
-    const margin = 20
+    // Get safe area insets for notched devices
+    const safeTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-top)') || '0')
+    const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-bottom)') || '0')
+    const safeLeft = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-left)') || '0')
+    const safeRight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-right)') || '0')
+
+    // Responsive margins and buddy radius based on viewport size
+    const isMobile = window.innerWidth < 768
+    const margin = isMobile ? 30 : 20
     const btnW = noBtn.offsetWidth
     const btnH = noBtn.offsetHeight
-    const maxX = window.innerWidth - btnW - margin
-    const maxY = window.innerHeight - btnH - margin
+    const maxX = window.innerWidth - btnW - margin - safeRight
+    const maxY = window.innerHeight - btnH - margin - safeBottom
+    const minX = margin + safeLeft
+    const minY = margin + safeTop
+
     const yesRect = yesBtn.getBoundingClientRect()
-    const pad = 20
+    const pad = isMobile ? 15 : 20
     const avoidLeft = yesRect.left - pad
     const avoidRight = yesRect.right + pad
     const avoidTop = yesRect.top - pad
     const avoidBottom = yesRect.bottom + pad
 
     // If chase is active, get buddy position to avoid
+    // Use smaller radius on mobile so button doesn't get trapped
     let buddyLeft = -1000, buddyRight = -1000, buddyTop = -1000, buddyBottom = -1000
-    const BUDDY_AVOID_RADIUS = 200  // Stay at least this far from buddy
+    const BUDDY_AVOID_RADIUS = isMobile ? 120 : 200
 
     if (chaseActive && takerPosition) {
         buddyLeft = takerPosition.x - BUDDY_AVOID_RADIUS
@@ -472,13 +519,13 @@ function runAway() {
         buddyBottom = takerPosition.y + 100 + BUDDY_AVOID_RADIUS
     }
 
-    let randomX = margin / 2
+    let randomX = minX
     let randomY = maxY
     let found = false
 
     for (let tries = 0; tries < 25; tries++) {
-        const x = margin / 2 + Math.random() * (maxX - margin / 2)
-        const y = margin / 2 + Math.random() * (maxY - margin / 2)
+        const x = minX + Math.random() * (maxX - minX)
+        const y = minY + Math.random() * (maxY - minY)
         const noRight = x + btnW
         const noBottom = y + btnH
 
@@ -504,18 +551,21 @@ function runAway() {
         if (chaseActive && takerPosition) {
             const buddyCenterX = takerPosition.x + 25
             const buddyCenterY = takerPosition.y + 50
-            randomX = buddyCenterX > window.innerWidth / 2 ? margin : maxX - margin
-            randomY = buddyCenterY > window.innerHeight / 2 ? margin : maxY - margin
+            randomX = buddyCenterX > window.innerWidth / 2 ? minX : Math.max(minX, maxX - margin)
+            randomY = buddyCenterY > window.innerHeight / 2 ? minY : Math.max(minY, maxY - margin)
         } else {
-            randomX = margin / 2 + Math.random() * (maxX - margin / 2)
-            randomY = margin / 2 + Math.random() * (maxY - margin / 2)
+            randomX = minX + Math.random() * (maxX - minX)
+            randomY = minY + Math.random() * (maxY - minY)
         }
     }
 
     noBtn.style.position = 'fixed'
-    noBtn.style.left = `${randomX}px`
-    noBtn.style.top = `${randomY}px`
+    noBtn.style.left = `${Math.max(minX, Math.min(randomX, maxX))}px`
+    noBtn.style.top = `${Math.max(minY, Math.min(randomY, maxY))}px`
     noBtn.style.zIndex = '40'
+
+    // Reset cursor moved flag - if button lands under cursor, don't trigger again
+    cursorMoved = false
 }
 
 function showStickFigureWarning() {

@@ -398,10 +398,12 @@
     #vday-app #no-btn {
         max-width: min(150px, 42vw);
         min-width: min(95px, 28vw);
-        font-size: clamp(0.68rem, 2.2vmin, 0.82rem);
+        font-size: clamp(0.75rem, 2.4vmin, 0.88rem);
         padding: clamp(10px, 2.3vmin, 13px) clamp(12px, 3vmin, 16px);
         min-height: clamp(50px, 12vmin, 60px);
-        line-height: 1.45;
+        line-height: 1.5;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 }
 @media screen and (orientation: portrait) and (max-width: 360px) {
