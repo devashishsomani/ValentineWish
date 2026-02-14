@@ -231,6 +231,22 @@ function animatePoemLines() {
 function handleYesClick() {
     console.log('Yes button clicked!')
 
+    // If user hasn't clicked No yet, tease them to try No first
+    if (noClickCount === 0) {
+        const teaseMsg = yesTeasePokes[yesTeasedCount % yesTeasePokes.length]
+        showTeaseMessage(teaseMsg)
+        yesTeasedCount++
+
+        // Wiggle the No button to draw attention
+        noBtn.style.animation = 'wiggleNo 0.5s ease'
+        setTimeout(() => {
+            noBtn.style.animation = ''
+        }, 500)
+
+        return // Don't proceed with Yes action
+    }
+
+    // User has clicked No at least once, proceed with Yes
     // Hide vday-app and show yes-app
     const vdayApp = document.getElementById('vday-app')
     const yesApp = document.getElementById('yes-app')
