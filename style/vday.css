@@ -221,19 +221,73 @@
     min-width: 200px;
     max-width: 320px;
     font-size: 0.95rem;
-    animation: no-btn-glow 1s ease-in-out infinite alternate;
-    box-shadow: 0 0 20px rgba(255, 200, 50, 0.9), 0 0 40px rgba(255, 180, 0, 0.5), 0 4px 14px rgba(231, 76, 60, 0.5);
-    border: 2px solid rgba(255, 220, 100, 0.9);
+    animation: no-btn-glow 0.8s ease-in-out infinite alternate, no-btn-pulse 1.6s ease-in-out infinite;
+    box-shadow:
+        0 0 30px rgba(255, 69, 0, 0.95),
+        0 0 60px rgba(255, 140, 0, 0.7),
+        0 0 90px rgba(255, 215, 0, 0.5),
+        0 4px 20px rgba(231, 76, 60, 0.8),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(255, 215, 0, 1);
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 50;
+    transform: scale(1.05);
+}
+
+#vday-app #no-btn.no-btn-last-chance::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: warning-beacon 2s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes warning-beacon {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.8;
+    }
 }
 
 @keyframes no-btn-glow {
     from {
-        box-shadow: 0 0 16px rgba(255, 200, 50, 0.8), 0 0 32px rgba(255, 180, 0, 0.4), 0 4px 14px rgba(231, 76, 60, 0.5);
-        border-color: rgba(255, 220, 100, 0.8);
+        box-shadow:
+            0 0 25px rgba(255, 69, 0, 0.9),
+            0 0 50px rgba(255, 140, 0, 0.6),
+            0 0 75px rgba(255, 215, 0, 0.4),
+            0 4px 18px rgba(231, 76, 60, 0.7);
+        border-color: rgba(255, 200, 0, 0.9);
     }
     to {
-        box-shadow: 0 0 28px rgba(255, 220, 80, 1), 0 0 56px rgba(255, 200, 0, 0.6), 0 4px 18px rgba(231, 76, 60, 0.6);
+        box-shadow:
+            0 0 40px rgba(255, 69, 0, 1),
+            0 0 80px rgba(255, 140, 0, 0.8),
+            0 0 120px rgba(255, 215, 0, 0.6),
+            0 4px 24px rgba(231, 76, 60, 0.9);
         border-color: rgba(255, 235, 120, 1);
+    }
+}
+
+@keyframes no-btn-pulse {
+    0%, 100% {
+        transform: scale(1.05);
+    }
+    50% {
+        transform: scale(1.12);
     }
 }
 
@@ -274,6 +328,14 @@
 
 /* v-day: tablet — fine-tune if needed (base is fluid) */
 @media screen and (max-width: 768px) {
+    #vday-app #no-btn.no-btn-last-chance {
+        box-shadow:
+            0 0 28px rgba(255, 69, 0, 0.98),
+            0 0 56px rgba(255, 140, 0, 0.75),
+            0 0 84px rgba(255, 215, 0, 0.55),
+            0 4px 18px rgba(231, 76, 60, 0.85);
+    }
+
     #vday-app .buttons {
         flex-wrap: nowrap;
         justify-content: center;
@@ -427,6 +489,18 @@
     #vday-app .vday-container {
         padding: clamp(16px, 5vmin, 28px) clamp(12px, 5vw, 16px);
     }
+
+    #vday-app #no-btn.no-btn-last-chance {
+        min-width: 180px;
+        max-width: 90vw;
+        font-size: clamp(0.85rem, 2.5vmin, 0.95rem);
+        box-shadow:
+            0 0 25px rgba(255, 69, 0, 1),
+            0 0 50px rgba(255, 140, 0, 0.8),
+            0 0 75px rgba(255, 215, 0, 0.6),
+            0 4px 16px rgba(231, 76, 60, 0.8);
+    }
+}
     #vday-app h1 {
         font-size: clamp(1.1rem, 4.5vmin, 1.6rem);
         padding: 0 4vw;

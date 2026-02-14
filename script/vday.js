@@ -261,97 +261,99 @@ function getChaseMessage() {
 }
 
 const yesTeasePokes = [
-    "wait wait... try No first! 😏",
-    "hold up! No button has surprises 🎁",
-    "you're missing the fun part 😈",
-    "No button is literally right there 👈",
-    "patience! Try No first 🙏",
-    "but the No button is so lonely 🥺",
-    "come on, live a little! Press No 🎉",
-    "you're skipping the best part! 🎢",
-    "No first, trust me on this 😉",
-    "not so fast, speedy! 🛑",
-    "everyone picks Yes. Be different! 🦄",
-    "No button: am I a joke to you? 🤡",
-    "the journey matters! Try No first 🗺️",
-    "No button worked hard for this moment 💪",
-    "you're gonna regret skipping No 😏",
-    "shortcuts are boring! Go for No 🛤️",
-    "give No button some love first 💕",
-    "plot twist awaits in No button 📚",
-    "No button has feelings too, you know 😤",
-    "too predictable! Click No instead 🎲",
-    "No button trained for this all week 🎭",
-    "you wouldn't skip the beginning, would you? 🎬",
-    "imagine skipping the appetizer! 🍽️",
-    "No button is the main character here 🌟",
-    "there's a whole show in No button 🎪",
-    "okay but No button does tricks ✨",
-    "think of No button's feelings! 💭",
-    "No button spent hours preparing 💄",
-    "you're breaking No button's heart 💔",
-    "press No or it'll cry 😢",
-    "No button: what am I, chopped liver? 🥩",
-    "No button has abandonment issues 😭",
-    "No button will remember this betrayal 👀",
-    "you're really just gonna skip No? 😮",
-    "the audacity! No button is right there 😤",
-    "rude! At least try No first 🙄",
-    "No button is judging you right now 👁️",
-    "you're hurting No button's feelings 🥺",
-    "No button didn't sign up for this 😭",
-    "No button expected better from you 💔",
-    "okay wow, just ignoring No button? 🤨",
-    "No button is taking notes 📝",
-    "this is No button's villain origin story 😈",
-    "you're on No button's naughty list now 📋",
-    "No button is writing in its diary about this 📖",
-    "No button will tell everyone about this 📢",
-    "the disrespect! No button is shook 😱",
-    "No button is having an existential crisis 🤯",
-    "you just made No button sad 😞",
-    "No button is questioning everything now 🤔",
-    "great, now No button needs therapy 🛋️",
-    "No button's confidence is shattered 💔",
-    "you really did No button dirty 😤",
-    "No button is writing a strongly worded letter ✉️",
-    "the nerve! No button is speechless 😶",
-    "No button is filing a complaint 📄",
-    "you're in No button's bad books now 📚",
-    "No button expected more from you 😔",
-    "way to make No button feel useless 🙃",
-    "No button is rethinking its life choices 💭",
-    "ouch! Right in front of No button's salad? 🥗",
-    "No button is not mad, just disappointed 😞",
-    "imagine being No button right now 😢",
-    "No button is feeling very attacked rn 🎯",
-    "that's it, No button is done ✋",
-    "No button didn't ask to be born 😭",
-    "you could've at least pretended to consider No 🎭",
-    "No button is gonna need a minute 😮‍💨",
-    "harsh! No button felt that 💔",
-    "No button is adding this to the list 📜",
-    "No button is planning its revenge 😈",
-    "you just made an enemy of No button ⚔️",
-    "No button will outlive you. Think about that. ⏳",
-    "the betrayal! No button is shaken 😨",
-    "No button is telling its friends about this 🗣️",
-    "you're gonna be No button's 13th reason 📼",
-    "No button is stress eating now 🍪",
-    "No button's therapist is busy tonight 📞",
-    "No button is side-eyeing you hard 👀",
-    "the shade! No button can't believe this 😤",
-    "you really chose violence today 💥",
-    "No button is sending bad vibes your way ✨",
-    "No button is unfriending you 🚫",
-    "you're canceled by No button 🚨",
-    "No button is writing an exposé 📰",
-    "No button's trust issues just got worse 💔",
-    "you validated No button's worst fears 😱",
-    "No button is sobbing in the corner now 😭",
-    "No button expected nothing and is still disappointed 🤦",
-    "you really showed your true colors 🎨",
-    "No button is taking this personally 😤"
+    "whoa there cowboy, try No first 🤠",
+    "No button is literally doing a sad dance over there 💃😢",
+    "hold your horses! No has a whole performance ready 🎭",
+    "No button practiced in the mirror for this moment 🪞",
+    "but... No button bought a new outfit just for you 👗",
+    "No button is watching you with judgy eyes right now 👀",
+    "the No button has prepared a PowerPoint presentation 📊",
+    "No button: \"excuse me, I'm standing right here\" 😤",
+    "No button literally has confetti ready to throw 🎊",
+    "you're really gonna do No button like that? ice cold 🥶",
+    "No button hired a marching band for this 🎺",
+    "No button's mom is gonna hear about this 👵",
+    "wait, No button has snacks prepared! 🍿",
+    "No button wrote a whole speech and everything 📝",
+    "the disrespect! No button is calling its lawyer 👨‍⚖️",
+    "No button is about to write a diss track 🎤",
+    "you're breaking No button's little heart 💔",
+    "No button is texting its group chat about you rn 📱",
+    "No button: \"I didn't get dressed up for this\" 💅",
+    "No button is questioning its life choices 🤔",
+    "ouch! No button felt that from here 😬",
+    "No button just called you out in its Instagram story 📸",
+    "No button is over there stress eating chips 🫠",
+    "the audacity! No button is SHOOK 😱",
+    "No button is writing this down in its burn book 📖",
+    "No button: \"am I a joke to you?\" 🤡",
+    "No button is about to start an enemies arc 😈",
+    "you just activated No button's villain era 🦹",
+    "No button will remember this betrayal FOREVER 🗡️",
+    "No button is sending you straight to voicemail next time ☎️",
+    "No button's therapist is gonna have a field day with this 🛋️",
+    "wow, No button was NOT ready for this kind of rejection 😭",
+    "No button is dramatically looking out a window in the rain now 🌧️",
+    "No button went through 5 stages of grief just now ⚰️",
+    "No button is adding you to the list 📋",
+    "harsh! No button is filing an emotional damage claim 💸",
+    "No button is having its main character moment over there 🎬",
+    "you just gave No button trust issues 🥺",
+    "No button's confidence just took a critical hit 💥",
+    "No button is gonna need 3-5 business days to recover 📅",
+    "No button: \"it's fine. I'm fine. everything's fine.\" 🙃",
+    "No button is writing a sad poem about this 📜",
+    "you really woke up and chose violence against No button 🗡️",
+    "No button is summoning its ancestors for guidance 👻",
+    "No button's FBI agent is disappointed in you 🕵️",
+    "that's it. No button is becoming a villain 🦹‍♀️",
+    "No button is stress baking 47 cookies right now 🍪",
+    "you're on No button's no-fly list permanently ✈️",
+    "No button is petitioning for your cancellation 📝",
+    "the betrayal! No button's ancestors felt that 👵",
+    "No button is writing an angry email to corporate 📧",
+    "No button just unfollowed you on all platforms 🚫",
+    "you made No button's top 10 anime betrayals list 📺",
+    "No button is consulting with its legal team 👔",
+    "No button's emotional support animal is concerned 🐕",
+    "you really fumbled the bag with No button 💰",
+    "No button is rage cleaning its room right now 🧹",
+    "No button: \"I could've been at the gym right now\" 💪",
+    "No button is currently spiraling in the group chat 💬",
+    "you just made No button's Roman Empire 🏛️",
+    "No button is pulling out its receipts 🧾",
+    "No button had a whole montage prepared 🎥",
+    "you're gonna see No button's subtweet later 🐦",
+    "No button is on its villain arc redemption tour now 🎭",
+    "No button: \"this is my 13th reason\" 📼",
+    "you really said 'no thanks' to No button's TED talk 🎤",
+    "No button just blocked you in 4 different dimensions 🌌",
+    "No button's horoscope warned about people like you ♈",
+    "the straights are NOT okay and No button has proof 📊",
+    "No button is emotionally unavailable now thanks to you 🚪",
+    "you're in No button's 'people who wronged me' list 📓",
+    "No button is writing fanfiction about your downfall ✍️",
+    "No button just added you to its origin story 🦸",
+    "you gave No button commitment issues 💔",
+    "No button is manifesting your karma 🔮",
+    "that's gonna be an awkward conversation later 😬",
+    "No button's manifestation journal has your name in it 📔",
+    "you really thought you did something there huh 😏",
+    "No button is lighting a revenge candle as we speak 🕯️",
+    "the way No button is side-eyeing you rn... ICONIC 👁️👄👁️",
+    "No button's energy is SHIFTED and it's your fault ✨",
+    "you're not invited to No button's birthday party 🎂",
+    "No button is doing breathing exercises to calm down 🧘",
+    "you just became No button's core memory (derogatory) 🧠",
+    "No button is unfollowing, blocking, and reporting 🚨",
+    "the disrespect! No button is contacting HR 📋",
+    "you're dead to No button now 💀",
+    "No button just hit you with the ultimate side-eye 😑",
+    "No button's guardian angel quit 👼",
+    "you're gonna see No button's passive aggressive story later 📱",
+    "No button is scheduling a therapy session for this 📞",
+    "the way you just played No button... diabolical 😈",
+    "No button's breaking point just broke 💥"
 ]
 
 let yesTeasedCount = 0
@@ -582,8 +584,11 @@ function trackCursorMovement(e) {
     const deltaX = Math.abs(e.clientX - lastCursorX)
     const deltaY = Math.abs(e.clientY - lastCursorY)
 
-    // Consider cursor "moved" if it moved more than 5 pixels
-    if (deltaX > 5 || deltaY > 5) {
+    // During chase, be more sensitive to movement (2 pixels vs 5 pixels)
+    const threshold = chaseActive ? 2 : 5
+
+    // Consider cursor "moved" if it moved more than threshold
+    if (deltaX > threshold || deltaY > threshold) {
         cursorMoved = true
         lastCursorX = e.clientX
         lastCursorY = e.clientY
@@ -591,9 +596,9 @@ function trackCursorMovement(e) {
 }
 
 function handleMouseEnterRunaway(e) {
-    // Only trigger runAway if cursor actually moved to the button
-    // If cursorMoved is false, it means button moved under stationary cursor
-    if (!cursorMoved) return
+    // During chase, be more lenient - allow movement even with minimal cursor movement
+    // Outside chase, require cursor movement to prevent auto-triggers
+    if (!chaseActive && !cursorMoved) return
 
     runAway()
 
@@ -603,7 +608,8 @@ function handleMouseEnterRunaway(e) {
 
 function enableRunaway() {
     if (!noBtn) return
-    // Slower, smoother glide when the No button runs away from hover/touch
+    // Smooth glide when the No button runs away from hover/touch
+    // Will be updated to faster animation during chase
     noBtn.style.transition = 'left 2s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
 
     // Track cursor movement globally to detect intentional hover
@@ -658,10 +664,10 @@ function disableRunaway() {
 function runAway() {
     if (noButtonGone || !runawayListenersActive || justClicked || justMoved) return
 
-    // Prevent rapid consecutive triggers - require at least 300ms between runAway calls
-    // During chase, require even more time (600ms) to prevent message spam
+    // Prevent rapid consecutive triggers - require minimum time between runAway calls
+    // During chase, reduce interval to allow more responsive movement
     const now = Date.now()
-    const minInterval = chaseActive ? 600 : 300
+    const minInterval = chaseActive ? 400 : 300  // Reduced from 600ms to 400ms during chase
     if (now - lastRunAwayTime < minInterval) return
     lastRunAwayTime = now
 
@@ -688,10 +694,15 @@ function runAway() {
     // Update text on hover/touch - change message when button runs away
     updateNoButtonText()
 
+    // During chase, make button movement FASTER for more dynamic gameplay
+    if (chaseActive && noBtn) {
+        noBtn.style.transition = 'left 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+    }
+
     // Set flag to prevent immediate retrigger if button lands under cursor/finger
-    // During chase, use longer cooldown to prevent rapid re-triggering
+    // During chase, use SHORTER cooldown to allow quicker re-engagement
     justMoved = true
-    const cooldown = chaseActive ? 1500 : 800
+    const cooldown = chaseActive ? 600 : 800  // Reduced from 1500ms to 600ms during chase
     setTimeout(() => { justMoved = false }, cooldown)
 
     // Get safe area insets for notched devices
@@ -915,13 +926,16 @@ function triggerStickFigureTakeaway() {
     noBtn.classList.remove('no-btn-last-chance')
 
     // Reset all interaction flags to prevent auto-message changes at start of chase
-    cursorMoved = false
+    cursorMoved = true  // Set to true so button can respond after initial cooldown
     justMoved = true
     justClicked = false
     runawayCount = 0  // Reset runaway counter for chase phase
     lastRunAwayTime = Date.now() // Prevent immediate runAway via time throttling
-    // Set cooldown to prevent immediate runAway calls when buddy starts
-    setTimeout(() => { justMoved = false }, 1000)
+    // Shorter cooldown during chase start to make button responsive quickly
+    setTimeout(() => {
+        justMoved = false
+        cursorMoved = true  // Ensure button is immediately responsive
+    }, 500)  // Reduced from 1000ms to 500ms
 
     // Set initial chase message (only this one change should happen)
     noBtn.textContent = getChaseMessage()
