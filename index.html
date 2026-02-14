@@ -25,7 +25,7 @@
       <div class="one">
         <h1 class="one">
           Hey
-          <span id="name">baby!</span>
+          <span id="name">Shruti</span>
         </h1>
         <p class="two" id="greetingText">Good Morning!<br>I have got something for you</p>
       </div>
@@ -47,7 +47,7 @@
         <p class="idea-1">That's what I was going to do 😅</p>
         <p class="idea-2">Then my one brain cell said no 🧠❌</p>
         <p class="idea-3">
-          I realised I wanted to do something <strong>special</strong>    ✨
+          I realised I wanted to do something <strong>special</strong>  ✨
         </p>
         <p class="idea-4">Because,</p>
         <p class="idea-5">
@@ -170,12 +170,11 @@
     <script src="script/music.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
-    <!-- Shown when ?v= is in URL but config not found -->
+    <!-- Shown when ?v= is in URL but config not in localStorage (e.g. shared link on another device) -->
     <div id="config-missing-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); color: #fff; font-family: Nunito, sans-serif; justify-content: center; align-items: center; flex-direction: column; padding: 24px; text-align: center; z-index: 9999;">
-      <p style="font-size: 1.2rem; margin-bottom: 12px;">Custom link not found</p>
-      <p style="opacity: 0.9; margin-bottom: 8px; font-size: 0.95rem;">This link may have been created on a static hosting site.</p>
-      <p style="opacity: 0.9; margin-bottom: 20px; font-size: 0.95rem;">For cross-device custom links, the sender needs to run on a server (node server.js).</p>
-      <a href="index.html" style="color: #ffb3c1; font-weight: 700; font-size: 1rem;">Use default experience instead</a>
+      <p style="font-size: 1.2rem; margin-bottom: 12px;">This link was created on another device.</p>
+      <p style="opacity: 0.9; margin-bottom: 20px;">Ask the sender to create a new link from the customize page, or use the default experience below.</p>
+      <a href="index.html" style="color: #ffb3c1; font-weight: 700;">Use default experience</a>
     </div>
 
     <footer class="app-footer">Made with ❤️ by Devashish Somani © 2026</footer>
