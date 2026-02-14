@@ -368,10 +368,15 @@ function handleNoClick() {
         runawayEnabled = true
     }
 
-    // Only trigger buddy chase once when reaching MAX_NO_ATTEMPTS
-    // Don't return - allow continued interaction during chase
-    if (noAttemptCount >= MAX_NO_ATTEMPTS && !chaseActive && !pendingStickFigure) {
-        scheduleStickFigureTakeaway()
+    // Show warning on 19th attempt
+    if (noAttemptCount === MAX_NO_ATTEMPTS - 1 && !pendingStickFigure) {
+        showStickFigureWarning()
+        pendingStickFigure = true
+    }
+
+    // Activate buddy chase on 20th attempt
+    if (noAttemptCount === MAX_NO_ATTEMPTS && !chaseActive) {
+        triggerStickFigureTakeaway()
     }
 }
 
@@ -472,14 +477,22 @@ function runAway() {
     lastRunAwayTime = now
 
     noAttemptCount++
+
+    // Show warning on 19th attempt (hover/touch)
+    if (noAttemptCount === MAX_NO_ATTEMPTS - 1 && !pendingStickFigure) {
+        showStickFigureWarning()
+        pendingStickFigure = true
+        return  // Don't move button, just show warning
+    }
+
+    // Activate buddy chase on 20th attempt (hover/touch)
+    if (noAttemptCount === MAX_NO_ATTEMPTS && !chaseActive) {
+        triggerStickFigureTakeaway()
+        return  // Buddy will start chasing, don't move button manually
+    }
+
     // Update text on hover/touch - change message when button runs away
     updateNoButtonText()
-
-    // Only trigger buddy chase once when reaching MAX_NO_ATTEMPTS
-    // After that, keep the chase running - don't call scheduleStickFigureTakeaway again
-    if (noAttemptCount >= MAX_NO_ATTEMPTS && !chaseActive && !pendingStickFigure) {
-        scheduleStickFigureTakeaway()
-    }
 
     // Set flag to prevent immediate retrigger if button lands under cursor/finger
     // During chase, use longer cooldown to prevent rapid re-triggering
@@ -604,6 +617,8 @@ function scheduleStickFigureTakeaway() {
 }
 
 function triggerStickFigureTakeaway() {
+    if (chaseActive || noButtonGone) return  // Prevent multiple activations
+
     noBtn.classList.remove('no-btn-last-chance')
 
     // Reset all interaction flags to prevent auto-message changes at start of chase
@@ -616,6 +631,9 @@ function triggerStickFigureTakeaway() {
 
     // Set initial chase message (only this one change should happen)
     noBtn.textContent = getChaseMessage()
+
+    // Mark chase as active immediately
+    chaseActive = true
     const rect = noBtn.getBoundingClientRect()
     noBtn.style.position = 'fixed'
     noBtn.style.left = rect.left + 'px'
@@ -656,7 +674,6 @@ function triggerStickFigureTakeaway() {
 
     let takerX = START_LEFT
     let takerY = rect.top + rect.height / 2 - TAKER_H / 2
-    chaseActive = true
     takerPosition = { x: takerX, y: takerY }
 
     // Don't auto-change messages - only change on hover/touch interaction
