@@ -93,11 +93,42 @@ const animationTimeline = () => {
 
   const runLineByLine = (el, html, msPerLine) => {
     if (!el || !html) return;
-    const lines = html.split(/<br\s*\/?>/i);
+    const lines = html.split(/<br\s*\/?>/i).filter(line => line.trim().length > 0);
     let index = 0;
     const showNext = () => {
       if (index >= lines.length) return;
-      el.innerHTML = (el.innerHTML ? el.innerHTML + "<br>" : "") + lines[index];
+
+      // Create a wrapper span for the new line with animation
+      const lineSpan = document.createElement('span');
+      lineSpan.className = 'poem-line';
+      lineSpan.style.opacity = '0';
+      lineSpan.style.transform = 'translateY(12px)';
+      lineSpan.style.display = 'inline';
+      lineSpan.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+      lineSpan.textContent = lines[index];
+
+      // Add line break if not first line
+      if (index > 0) {
+        el.appendChild(document.createElement('br'));
+      }
+      el.appendChild(lineSpan);
+
+      // Trigger animation after a tiny delay to ensure transition works
+      setTimeout(() => {
+        lineSpan.style.opacity = '1';
+        lineSpan.style.transform = 'translateY(0)';
+      }, 50);
+
+      // Auto-scroll to keep new lines in view (smooth scroll)
+      setTimeout(() => {
+        if (el.scrollHeight > el.clientHeight) {
+          el.scrollTo({
+            top: el.scrollHeight,
+            behavior: 'smooth'
+          });
+        }
+      }, 300);
+
       index += 1;
       setTimeout(showNext, msPerLine);
     };
@@ -120,13 +151,11 @@ const animationTimeline = () => {
 
   const tl = new TimelineMax();
 
-  tl.to(".container", 0.1, {
+  tl.to("#valentine-wish-app > .container", 0, {
     visibility: "visible",
   })
-    .from(".one", 0.7, {
-      opacity: 0,
-      y: 10,
-    })
+    // First slide is shown by JS on play; hold 0.7s then continue (no .from so it stays visible)
+    .to("#valentine-wish-app > .container", 0.7, {})
     .from(".two", 0.4, {
       opacity: 0,
       y: 10,
@@ -325,7 +354,7 @@ const animationTimeline = () => {
     )
     .add(
       function () {
-        runLineByLine(wishTextEl, savedWishHtml, 700);
+        runLineByLine(wishTextEl, savedWishHtml, 2000);
       },
       [],
       "+=0.2"
@@ -442,16 +471,78 @@ const bindIntroButton = () => {
     function (e) {
       e.preventDefault();
       e.stopPropagation();
-      overlay.classList.add("hidden");
-      if (window.startValentineMusic) window.startValentineMusic();
-      const tl = animationTimeline();
-      tl.play();
+      try {
+        const app = document.getElementById("valentine-wish-app");
+        const storyContainer = app ? app.querySelector(".container") : document.querySelector("#valentine-wish-app > .container");
+        const firstSlide = app ? app.querySelector(".container > .one") : null;
+
+        // Always hide overlay and show story first (CSS sibling rule also shows .container)
+        overlay.classList.add("hidden");
+        if (storyContainer) {
+          storyContainer.style.visibility = "visible";
+          storyContainer.classList.add("story-visible");
+        }
+        if (firstSlide) {
+          firstSlide.style.opacity = "1";
+          firstSlide.style.visibility = "visible";
+          firstSlide.style.transform = "translateY(0)";
+        }
+
+        if (typeof TimelineMax === "undefined") {
+          console.warn("ValentineWish: GSAP not loaded; story visible but animation will not run.");
+          if (window.startValentineMusic) window.startValentineMusic();
+          return;
+        }
+        let tl;
+        try {
+          tl = animationTimeline();
+        } catch (timelineErr) {
+          console.error("ValentineWish: timeline build error", timelineErr);
+          overlay.classList.remove("hidden");
+          if (storyContainer) {
+            storyContainer.classList.remove("story-visible");
+            storyContainer.style.removeProperty("visibility");
+          }
+          if (firstSlide) {
+            firstSlide.style.removeProperty("opacity");
+            firstSlide.style.removeProperty("visibility");
+            firstSlide.style.removeProperty("transform");
+          }
+          return;
+        }
+        if (tl) {
+          if (window.startValentineMusic) window.startValentineMusic();
+          tl.play();
+        }
+      } catch (err) {
+        console.error("ValentineWish: play error", err);
+        overlay.classList.remove("hidden");
+        const storyContainer = document.querySelector("#valentine-wish-app > .container");
+        const firstSlide = document.querySelector("#valentine-wish-app .container > .one");
+        if (storyContainer) {
+          storyContainer.classList.remove("story-visible");
+          storyContainer.style.removeProperty("visibility");
+        }
+        if (firstSlide) {
+          firstSlide.style.removeProperty("opacity");
+          firstSlide.style.removeProperty("visibility");
+          firstSlide.style.removeProperty("transform");
+        }
+      }
     },
-    { once: true, capture: false }
+    { once: false, capture: false }
   );
 };
 
-resolveFetch().then(() => {
-  if (document.getElementById("config-missing-overlay").style.display === "flex") return;
-  bindIntroButton();
-});
+function init() {
+  resolveFetch().then(() => {
+    const missingEl = document.getElementById("config-missing-overlay");
+    if (missingEl && missingEl.style.display === "flex") return;
+    bindIntroButton();
+  });
+}
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}

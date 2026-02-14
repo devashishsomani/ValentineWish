@@ -137,11 +137,14 @@ body {
   text-align: center;
   font-family: "Nunito", sans-serif;
   font-size: clamp(0.65rem, 2vmin, 0.8rem);
-  color: rgba(0, 0, 0, 0.45);
-  z-index: 50;
+  color: rgba(0, 0, 0, 0.55);
+  z-index: 150;
   pointer-events: none;
   padding: 8px max(12px, 3vw) calc(10px + env(safe-area-inset-bottom, 0));
   box-sizing: border-box;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 #valentine-wish-app {
@@ -241,6 +244,7 @@ body {
   padding: 0 2vw;
   max-width: 100%;
   overflow-wrap: break-word;
+  line-height: 1.4;
 }
 
 .start-play-btn {
@@ -280,7 +284,7 @@ body {
   top: clamp(10vh, 14vmin, 20vh);
   bottom: auto;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
   pointer-events: none;
@@ -291,14 +295,15 @@ body {
 
 /* Same formatting for chaos line and "E-cards?" line — fluid for device ratio */
 .screen-message {
-  font-size: clamp(1.25rem, 6vmin, 3rem);
+  font-size: clamp(1.1rem, 5.5vmin, 2.8rem);
   font-weight: 400;
   margin: 0;
-  line-height: 1.25;
+  line-height: 1.35;
   color: #000;
   overflow-wrap: break-word;
   word-break: break-word;
-  max-width: 100%;
+  max-width: 95%;
+  text-align: center;
 }
 
 .two-b p {
@@ -307,7 +312,7 @@ body {
 }
 
 .three {
-  font-size: clamp(1.25rem, 6vmin, 3rem);
+  font-size: clamp(1.1rem, 5.5vmin, 2.8rem);
 }
 
 .three p {
@@ -417,8 +422,8 @@ body {
 
 .six img.girl-dp {
   display: inline-block;
-  max-width: min(52%, 280px);
-  width: min(52%, 280px);
+  max-width: min(65%, 380px);
+  width: min(65%, 380px);
   height: auto;
   flex-shrink: 0;
 }
@@ -540,7 +545,7 @@ body {
 .wish h5 {
   font-weight: lighter;
   font-size: clamp(1rem, 2.8vmin, 1.4rem);
-  line-height: 1.4;
+  line-height: 1.6;
   margin: 8px 0 0;
   width: 100%;
   max-width: min(100%, calc(100vw - 24px));
@@ -552,6 +557,13 @@ body {
   overflow-wrap: break-word;
   word-break: break-word;
   box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+/* Poem line animation styles */
+.poem-line {
+  display: inline;
+  font-weight: lighter;
 }
 
 .nine p {
@@ -578,7 +590,7 @@ body {
 @media screen and (max-height: 800px) {
   .six .hat { left: 37%; }
   .container div.six { max-height: 84vh; top: 4vh; }
-  .six img.girl-dp { max-width: min(48%, 260px); width: min(48%, 260px); }
+  .six img.girl-dp { max-width: min(58%, 320px); width: min(58%, 320px); }
   .wish-hbd { font-size: clamp(1.65em, 5.2vmin, 2.4em); }
   .wish h5 { font-size: clamp(0.95rem, 2.6vmin, 1.25rem); max-height: 50vh; }
 }
@@ -586,7 +598,7 @@ body {
 @media screen and (max-height: 700px) {
   .six .hat { left: 32%; }
   .container div.six { max-height: 82vh; top: 3vh; }
-  .six img.girl-dp { max-width: min(44%, 220px); width: min(44%, 220px); }
+  .six img.girl-dp { max-width: min(52%, 280px); width: min(52%, 280px); }
   .wish-hbd { font-size: clamp(1.5em, 4.5vmin, 2.1em); }
   .wish h5 { font-size: clamp(0.9rem, 2.4vmin, 1.12rem); max-height: 48vh; line-height: 1.35; }
 }
@@ -644,11 +656,11 @@ body {
 
   .two,
   .screen-message {
-    font-size: clamp(1.15rem, 5vmin, 2.2rem);
+    font-size: clamp(1rem, 4.8vmin, 2.1rem);
   }
 
   .three {
-    font-size: clamp(1.15rem, 5vmin, 2.2rem);
+    font-size: clamp(1rem, 4.8vmin, 2.1rem);
   }
 
   .four {
@@ -672,8 +684,8 @@ body {
   }
 
   .six img.girl-dp {
-    max-width: min(50%, 260px);
-    width: min(50%, 260px);
+    max-width: min(58%, 300px);
+    width: min(58%, 300px);
   }
 
   .wish-hbd {
@@ -716,11 +728,11 @@ body {
 
   .two,
   .screen-message {
-    font-size: clamp(0.9rem, 4vmin, 1.5rem);
+    font-size: clamp(0.85rem, 3.8vmin, 1.45rem);
   }
 
   .three {
-    font-size: clamp(0.9rem, 4vmin, 1.5rem);
+    font-size: clamp(0.85rem, 3.8vmin, 1.45rem);
   }
 
   .four {
@@ -767,8 +779,8 @@ body {
   }
 
   .six img.girl-dp {
-    max-width: min(46%, 200px);
-    width: min(46%, 200px);
+    max-width: min(52%, 240px);
+    width: min(52%, 240px);
   }
 
   .wish-hbd {
@@ -817,11 +829,11 @@ body {
 
   .two,
   .screen-message {
-    font-size: clamp(0.8rem, 3.5vmin, 1.35rem);
+    font-size: clamp(0.75rem, 3.3vmin, 1.3rem);
   }
 
   .three {
-    font-size: clamp(0.8rem, 3.5vmin, 1.35rem);
+    font-size: clamp(0.75rem, 3.3vmin, 1.3rem);
   }
 
   .four {
@@ -841,8 +853,8 @@ body {
   }
 
   .six img.girl-dp {
-    max-width: min(44%, 160px);
-    width: min(44%, 160px);
+    max-width: min(50%, 200px);
+    width: min(50%, 200px);
   }
 
   .wish-hbd {
@@ -857,5 +869,41 @@ body {
 
   .nine p {
     font-size: clamp(0.85rem, 2.5vmin, 1.1rem);
+  }
+}
+
+/* Mobile portrait — hide decorative elements that appear at bottom */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  .baloons img {
+    display: none !important;
+  }
+  .eight svg {
+    display: none !important;
+  }
+
+  /* Better line-height and font sizing for text on mobile portrait */
+  .screen-message {
+    line-height: 1.45;
+    font-size: clamp(0.9rem, 4.2vmin, 1.6rem);
+  }
+  .two {
+    line-height: 1.5;
+  }
+  .hbd-chatbox {
+    line-height: 1.4;
+  }
+  .three {
+    font-size: clamp(0.9rem, 4.2vmin, 1.6rem);
+  }
+}
+
+/* Mobile landscape — reduce size of decorative elements */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .baloons img {
+    width: min(120px, 30vmin) !important;
+    max-width: 60vw !important;
+  }
+  .eight svg {
+    width: clamp(12px, 3vmin, 18px) !important;
   }
 }

@@ -1,53 +1,163 @@
 # ValentineWish 💕
 
-A Valentine's Day web experience: intro, story timeline, and a “Will you be my Valentine?” card with a Yes/No choice. Say No enough times and **Peep** (the character from the door game) chases the No button, grabs it, and runs off with it.
+A romantic Valentine's Day web experience featuring a beautiful video backdrop, animated story timeline, photo card, and an interactive "Will you be my Valentine?" question. The app is fully responsive and works seamlessly across all devices.
 
-**Live:** [Valentine card](https://devashishsomani.github.io/ValentineWish/) · [Create your link (customize)](https://devashishsomani.github.io/ValentineWish/customize.html)
+**Live:** [Valentine card](https://devashishsomani.github.io/ValentineWish/) · [Create your custom link](https://devashishsomani.github.io/ValentineWish/customize.html)
 
-## Run locally
+## ✨ Features
+
+- **🎬 Video Backdrop** — Beautiful pastel pink animated background that plays throughout the story
+- **📱 Fully Responsive** — Optimized for desktop, tablets, and mobile devices (portrait & landscape)
+- **🎭 Interactive Story** — Animated timeline with messages, jokes, and romantic moments
+- **🎨 Customization** — Personalize names, messages, photos, songs, and GIFs via a simple form
+- **🎵 Background Music** — Default romantic song with option to upload your own
+- **💚 Yes/No Game** — Interactive buttons with playful responses; No button grows harder to click
+- **🏃 Peep Chase** — After multiple "No" clicks, Peep (from ncase/door) chases and steals the No button!
+
+## 🚀 Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Opens at `http://localhost:7777` with live reload for HTML, CSS, and JS. On Windows use `npm start` (or adjust the script for your browser).
+Opens at `http://localhost:7777` with live reload for HTML, CSS, and JS.
 
-## What’s in the app
+**Alternative:** Use Python's built-in server:
+```bash
+python3 -m http.server 8000
+```
+Then open `http://localhost:8000/index.html`
 
-- **Intro** — Play button to start; optional name/greeting.
-- **Story** — Short timeline (e-card jokes, “something special”, “you’re a big deal”).
-- **Card** — Photo, title “Happy Valentine’s Day Gorgeous 💕”, and a message/poem (default: Hindi poem; main line: *“Happiness is a drug and I want to be your dealer.”*).
-- **Yes / No** — Yes leads to `yes.html`. No leads to teasing messages and, eventually, runaway mode and the **Peep** chase.
+## 📱 Responsive Design
 
-## No button & Peep chase
+The app features advanced responsive design:
+- **Fluid Typography** — Uses `clamp()` for text that scales smoothly across all screen sizes
+- **Adaptive Layouts** — Content repositions automatically for optimal viewing
+- **Touch-Friendly** — Minimum 44px touch targets for buttons (Apple/Google guidelines)
+- **Safe Areas** — Supports iPhone notches and home indicators with `env(safe-area-inset-*)`
+- **Orientation Support** — Optimized layouts for both portrait and landscape modes
+- **Viewport Units** — Uses `vmin`, `vw`, `vh`, `dvh` for dynamic scaling
 
-- Early No’s show a sequence of messages (e.g. “Are you sure?”, “Pookie please…”, “One more 'No' and I'm sending the little buddy.”).
-- After **5** No attempts, **runaway mode** turns on: the No button can be moved by hover/touch; it’s harder to click.
-- After one more No (or hover) in runaway mode, the **Peep** is triggered (the bouncy character from [ncase/door](https://github.com/ncase/door)): it chases the No button with a bounce animation, “grabs” it with a squash/stretch, then runs off the screen with it; the No button disappears.
-- While the Peep is chasing, the No button text cycles every 1.5s through a large pool of random messages (from `noMessages` and `noMessagesRandom` in `script/vday.js`).
+### Media Query Breakpoints:
+- Desktop: ≤1200px
+- Tablet: ≤768px
+- Mobile: ≤500px
+- Small phones: ≤380px, ≤360px
+- Landscape: max-height 500px
 
-## Customize
+## 🎯 User Flow
 
-- **[customize.html](https://devashishsomani.github.io/ValentineWish/customize.html)** — Set name, greeting, card title, photo URL, and wish/poem. Options are saved to **`customize.json`** and applied when the main app loads (see `script/main.js`).
+1. **Intro Screen** — "Press the play button" overlay with animated play button
+2. **Story Timeline** — Animated messages appear over video backdrop:
+   - "Hey baby!" greeting
+   - Opening line ("Good Morning! I have got something for you")
+   - Story progression with jokes about e-cards
+   - "Something special" message
+   - "You're a big deal" moment
+3. **Photo Card** — Image with title "Happy Valentine's Day Gorgeous 💕" and poem
+4. **Yes/No Question** — "Will you be my Valentine?" with two buttons:
+   - **Yes** → Celebration page with confetti and romantic message
+   - **No** → Teasing messages, runaway button, then Peep chase
 
-## Project layout
+## 🔘 No Button Behavior
+
+- **Early clicks (1-5):** Show teasing messages ("Are you sure?", "Pookie please…", etc.)
+- **After 5 clicks:** **Runaway mode** activates — button moves on hover/touch
+- **After 6+ clicks:** **Peep chase** — The bouncy character chases, grabs, and runs off with the No button
+- **During chase:** Button text cycles through random funny messages every 1.5s
+
+## 🎨 Customize Your Card
+
+Visit **[customize.html](https://devashishsomani.github.io/ValentineWish/customize.html)** to create a personalized link:
+
+### Required:
+- **Name** — Shown as "Hey [name]!"
+
+### Optional:
+- **Opening Line** — Custom greeting below the name
+- **Chaos/Greeting Text** — Story message with emojis
+- **Photo** — Appears on the card (auto-compressed for localStorage)
+- **Wish/Poem** — Custom message (defaults to Hindi poem)
+- **Background Song** — Upload MP3 or other audio file
+- **GIFs** — Custom GIFs for the Yes/No page and celebration page
+
+### How It Works:
+1. Fill in the form with your customizations
+2. Click "Generate my link"
+3. Get a unique URL with ID (e.g., `index.html?v=abc123xyz`)
+4. Share the link — customizations are stored in browser's localStorage
+5. **Note:** Link works best in the same browser; other devices show a fallback message
+
+## 📁 Project Structure
 
 | Path | Purpose |
-|------|--------|
-| `index.html` | Main app: intro, story, card, Yes/No. Contains default poem and main quote. |
-| `yes.html` | Page shown when the user clicks Yes. |
-| `customize.html` | Customization form; writes `customize.json`. |
-| `customize.json` | Saved customization (name, greeting, wish text, etc.). |
-| `script/main.js` | App flow, timeline, applying customize data, Yes/No click handling. |
-| `script/vday.js` | No-button logic: runaway mode, Peep chase/grab/runaway, messages. |
-| `script/music.js` | Background music control. |
-| `style/style.css` | Main styles. |
-| `style/vday.css` | Valentine-specific styles (Peep bounce/grab keyframes, run-off). |
-| `img/peep.png` | Peep character sprite (from [ncase/door](https://github.com/ncase/door), public domain). |
+|------|---------|
+| `index.html` | Main app with intro, story, card, and Yes/No question |
+| `customize.html` | Customization form for creating personalized links |
+| `customize.json` | Default customization values (fallback) |
+| `script/main.js` | App flow, GSAP timeline animations, config loader |
+| `script/vday.js` | Yes/No button logic, runaway mode, Peep chase animation |
+| `script/music.js` | Background music controls with play/pause/switch |
+| `style/style.css` | Main styles with responsive design (story sections) |
+| `style/vday.css` | Valentine-specific styles (buttons, Peep animations) |
+| `backdrop/pastel_pink.mp4` | Video backdrop (pastel pink animation) |
+| `img/peep.png` | Peep character sprite (from ncase/door, public domain) |
+| `img/vector.jpg` | Default profile image |
+| `music/` | Background music files (MP3) |
 
-## Tech
+## 🛠 Tech Stack
 
-- Plain HTML/CSS/JS; no framework.
-- Dev server: **browser-sync** (see `package.json` scripts).
-- Original repo: [happy-birthday](https://github.com/faahim/happy-birthday); modified for Valentine’s Day. Chase character (Peep) from [ncase/door](https://github.com/ncase/door).
+- **Plain HTML/CSS/JS** — No frameworks, pure vanilla JavaScript
+- **GSAP (GreenSock)** — Timeline animations for story sequence
+- **Babel Standalone** — For JSX-like syntax in browser
+- **Canvas Confetti** — Celebration confetti on Yes page
+- **Browser-Sync** — Development server with live reload
+
+## 🎬 Video Backdrop
+
+The video backdrop (`backdrop/pastel_pink.mp4`) creates an immersive experience:
+- Positioned with `z-index: 0` behind all content
+- `position: fixed` for full viewport coverage
+- `object-fit: cover` maintains aspect ratio
+- Autoplays, muted, and loops continuously
+- Pauses when transitioning to Yes/No section
+
+## 📝 Default Content
+
+### Default Poem (Hindi):
+```
+तू है तो लगता है कि है कोई जो मुझे चाह सकेगा,
+हाँ, मैं हूँ थोड़ा पागल, हूँ थोड़ा नासमझ,
+तेरे होने से है कोई जो मुझे मना सकेगा।
+
+तेरी आदतों में मेरी कितनी शरारतों ने घर पाया है,
+वरना तो ये दिल तो बस भटकता आया है।
+
+सपनों का है एक घर मेरा, उजली सी छत वाला,
+सब कहते हैं — घर ऐसा सपनों में ही होता है।
+
+तेरे होने से ही वो घर आशियाना सा लगेगा,
+तेरे साथ ही हर लम्हा सुहाना सा रहेगा।
+
+तू है तो लगता है कि है कोई जो मुझे चाह सकेगा,
+मैं हूँ प्यार के लायक बहुत —
+ये कोई मुझे बता सकेगा।
+```
+
+### Main Quote (Yes page):
+> "Happiness is a drug and I want to be your dealer."
+
+## 📜 Credits
+
+- **Original Birthday Card:** [faahim/happy-birthday](https://github.com/faahim/happy-birthday)
+- **Peep Character:** [ncase/door](https://github.com/ncase/door) (public domain)
+- **Developed by:** Devashish Somani
+
+## 📄 License
+
+Open source. Feel free to fork, customize, and share!
+
+---
+
+Made with ❤️ by Devashish Somani © 2026

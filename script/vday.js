@@ -17,47 +17,80 @@ const noMessages = [
     "Are you sure? 🤔",
     "Really? 😢",
     "Pookie please... 🥺",
-    "If you say no, I'll be really sad...",
+    "If you say no,\nI'll be really sad...",
     "Please??? 💔",
-    "After {sequence_number} no's, I'm still here. That's commitment. 💪",
-    "You tried {sequence_number} times… I admire the dedication. 👏",
-    "I promise unlimited hugs if you press 'Yes' 🤗",
-    "AI prediction: 99.99% chance you meant to press 'Yes'. 🤖",
-    "Achievement Unlocked: Denial Queen 👑",
-    "Scientists say pressing 'Yes' increases happiness by 200%. 📈",
-    "Boss Level Reached. Only 'Yes' can defeat me. 🎮",
-    "Denial is a river… but we're not in Egypt. 🌊",
-    "Be honest… your finger is tired. Just press Yes. 😅",
-    "You're clicking 'No' but smiling, aren't you? 😏",
-    "After {sequence_number} no's, I'm still here. That's commitment. 💪",
-    "At this point, it's destiny. ✨",
-    "The universe is begging you to press Yes. 🌌",
-    "One more 'No' and I'm sending the little buddy. 😊"
+    "After {sequence_number} no's,\nI'm still here.\nThat's commitment. 💪",
+    "You tried {sequence_number} times…\nI admire the dedication. 👏",
+    "I promise unlimited hugs\nif you press 'Yes' 🤗",
+    "AI prediction:\n99.99% chance you meant\nto press 'Yes'. 🤖",
+    "Achievement Unlocked:\nDenial Queen 👑",
+    "Scientists say pressing 'Yes'\nincreases happiness\nby 200%. 📈",
+    "Boss Level Reached.\nOnly 'Yes' can defeat me. 🎮",
+    "Denial is a river…\nbut we're not in Egypt. 🌊",
+    "Be honest…\nyour finger is tired.\nJust press Yes. 😅",
+    "You're clicking 'No'\nbut smiling, aren't you? 😏",
+    "After {sequence_number} no's,\nI'm still here.\nThat's commitment. 💪",
+    "At this point,\nit's destiny. ✨",
+    "The universe is begging\nyou to press Yes. 🌌",
+    "One more 'No' and\nI'm sending the little buddy. 😊"
 ]
 
 // Pool of messages that can appear randomly after attempt 6 (mixed in via getNoMessage)
 const noMessagesRandom = [
-    "Nope doesn't count. Try Yes! 😄",
-    "Your brain is confused. Heart wants Yes. 🖱️",
-    "Error 404: Valid excuse not found. Press Yes. 🔍",
-    "This button is just for decoration. Yes is that way → 🎀",
-    "Plot twist: you're gonna press Yes. 🎬",
-    "Your future 🔮 self says press Yes.",
-    "The cat 🐱 is judging you. Press Yes.",
-    "Denial: level expert. But Yes wins. 🏆"
+    "Nope doesn't count.\nTry Yes! 😄",
+    "Your brain is confused.\nHeart wants Yes. 🖱️",
+    "Error 404:\nValid excuse not found.\nPress Yes. 🔍",
+    "This button is just\nfor decoration.\nYes is that way → 🎀",
+    "Plot twist:\nyou're gonna press Yes. 🎬",
+    "Your future 🔮 self\nsays press Yes.",
+    "The cat 🐱 is judging you.\nPress Yes.",
+    "Denial: level expert.\nBut Yes wins. 🏆"
+]
+
+// Messages shown during Peep chase (more contextual)
+const noMessagesChase = [
+    "Too late!\nThe buddy is coming! 🏃",
+    "Run all you want...\nYes is inevitable! 😏",
+    "Resistance is futile! 💨",
+    "The buddy doesn't\ntake no for an answer! 🎯",
+    "You've been warned! 🚨",
+    "Catch you soon! 😈",
+    "No escape now! 🏃💨",
+    "Almost got you... 👀",
+    "Getting closer! 😏",
+    "You're toast! 🍞",
+    "Gotcha! Well, almost... 😅",
+    "Nice try running! 🏃‍♀️💨",
+    "The buddy is\non a mission! 🎯",
+    "Say goodbye to No! 👋",
+    "Too slow! ⚡"
 ]
 
 function getNoMessage(attemptNum) {
     const oneBased = Math.max(1, attemptNum)
     let msg
-    if (oneBased <= noMessages.length) {
+
+    if (oneBased <= noMessages.length - 1) {
+        // Show sequential messages up to second-to-last
         msg = noMessages[oneBased - 1]
+    } else if (oneBased === noMessages.length) {
+        // At the last index: only show "buddy" warning if runaway not yet enabled
+        if (!runawayEnabled) {
+            msg = noMessages[noMessages.length - 1]
+        } else {
+            // If runaway already enabled, show random message instead
+            msg = noMessagesRandom[Math.floor(Math.random() * noMessagesRandom.length)]
+        }
     } else {
-        msg = noMessages[noMessages.length - 1]
+        // After all sequential messages, show random
+        msg = noMessagesRandom[Math.floor(Math.random() * noMessagesRandom.length)]
     }
+
+    // Mix in random messages after attempt 7
     if (oneBased >= 7 && oneBased < MAX_NO_ATTEMPTS && Math.random() < 0.35) {
         msg = noMessagesRandom[Math.floor(Math.random() * noMessagesRandom.length)]
     }
+
     return msg.replace(/\{sequence_number\}/g, String(oneBased))
 }
 
@@ -65,6 +98,11 @@ function getRandomNoMessage() {
     const pool = [...noMessages, ...noMessagesRandom]
     const msg = pool[Math.floor(Math.random() * pool.length)]
     return msg.replace(/\{sequence_number\}/g, String(noAttemptCount))
+}
+
+function getChaseMessage() {
+    const msg = noMessagesChase[Math.floor(Math.random() * noMessagesChase.length)]
+    return msg
 }
 
 const yesTeasePokes = [
@@ -83,6 +121,8 @@ let runawayListenersActive = false
 let musicPlaying = true
 let noButtonGone = false
 let pendingStickFigure = false
+let chaseActive = false
+let takerPosition = null  // Track buddy position during chase
 
 const STICK_FIGURE_WARNING = "⚠️ Last chance! The little buddy is coming... 😊🎁💕"
 
@@ -118,27 +158,87 @@ function toggleMusic() {
     }
 }
 
+function animatePoemLines() {
+    const poemLines = document.querySelectorAll('.poem-line-item')
+    let delay = 0
+    const delayPerLine = 1200  // 1.2 seconds between each line
+
+    poemLines.forEach((line, index) => {
+        setTimeout(() => {
+            line.classList.add('visible')
+        }, delay)
+        delay += delayPerLine
+    })
+}
+
 function handleYesClick() {
-    if (!runawayEnabled) {
-        const msg = yesTeasePokes[Math.min(yesTeasedCount, yesTeasePokes.length - 1)]
-        yesTeasedCount++
-        showTeaseMessage(msg)
-        return
-    }
-    document.getElementById('vday-app').style.display = 'none'
+    console.log('Yes button clicked!')
+
+    // Hide vday-app and show yes-app
+    const vdayApp = document.getElementById('vday-app')
     const yesApp = document.getElementById('yes-app')
-    yesApp.style.display = 'block'
+
+    if (vdayApp) {
+        vdayApp.style.display = 'none'
+        vdayApp.style.visibility = 'hidden'
+    }
+
+    if (yesApp) {
+        yesApp.style.display = 'flex'
+        yesApp.style.visibility = 'visible'
+        yesApp.style.opacity = '1'
+
+        console.log('Yes app shown')
+
+        // Ensure title and message are visible
+        const yesTitle = yesApp.querySelector('.yes-title')
+        const yesMessage = yesApp.querySelector('.yes-message')
+        const yesGif = document.getElementById('yes-gif')
+
+        if (yesTitle) {
+            yesTitle.style.opacity = '1'
+            yesTitle.style.visibility = 'visible'
+            console.log('Title visible')
+        }
+        if (yesMessage) {
+            yesMessage.style.opacity = '1'
+            yesMessage.style.visibility = 'visible'
+            console.log('Message visible')
+        }
+        if (yesGif) {
+            yesGif.style.opacity = '1'
+            yesGif.style.visibility = 'visible'
+            console.log('GIF visible')
+        }
+
+        // Start poem line-by-line animation
+        animatePoemLines()
+    }
+
+    // Load custom GIF if available
     if (window.__valentineConfigId) {
         try {
             const raw = localStorage.getItem('valentine_config_' + window.__valentineConfigId)
             if (raw) {
                 const config = JSON.parse(raw)
                 const yesGif = document.getElementById('yes-gif')
-                if (yesGif && config.gifYesDataUrl) yesGif.setAttribute('src', config.gifYesDataUrl)
+                if (yesGif && config.gifYesDataUrl) {
+                    yesGif.setAttribute('src', config.gifYesDataUrl)
+                    console.log('Custom GIF loaded')
+                }
             }
-        } catch (e) {}
+        } catch (e) {
+            console.error('Failed to load custom yes gif:', e)
+        }
     }
-    if (typeof window.launchYesConfetti === 'function') window.launchYesConfetti()
+
+    // Launch confetti animation
+    if (typeof window.launchYesConfetti === 'function') {
+        window.launchYesConfetti()
+        console.log('Confetti launched')
+    } else {
+        console.warn('Confetti function not found')
+    }
 }
 
 function showTeaseMessage(msg) {
@@ -159,10 +259,13 @@ function handleNoClick() {
     noAttemptCount++
     updateNoButtonText()
 
-    const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize)
-    yesBtn.style.fontSize = `${currentSize * 1.35}px`
-    const padY = Math.min(18 + noClickCount * 5, 60)
-    const padX = Math.min(45 + noClickCount * 10, 120)
+    // Grow Yes button on each No, but cap so it stays usable and doesn’t overflow
+    const baseSize = parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16
+    const maxYesFont = Math.min(baseSize * 1.75, 28)
+    const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize) || baseSize * 1.1
+    yesBtn.style.fontSize = `${Math.min(currentSize * 1.2, maxYesFont)}px`
+    const padY = Math.min(14 + noClickCount * 4, 48)
+    const padX = Math.min(28 + noClickCount * 8, 100)
     yesBtn.style.padding = `${padY}px ${padX}px`
 
     if (noClickCount >= 2) {
@@ -195,7 +298,8 @@ function swapGif(src) {
 function enableRunaway() {
     if (!noBtn) return
     runawayListenersActive = true
-    noBtn.style.transition = 'left 0.45s ease-out, top 0.45s ease-out'
+    // Slower, smoother glide when the No button runs away from hover/touch
+    noBtn.style.transition = 'left 2s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
     noBtn.addEventListener('mouseover', runAway)
     noBtn.addEventListener('touchstart', runAway, { passive: true })
 }
@@ -212,7 +316,7 @@ function runAway() {
     if (noButtonGone || !runawayListenersActive) return
 
     noAttemptCount++
-    updateNoButtonText()
+    // Don't update text on hover - text only changes on actual clicks
 
     if (noAttemptCount >= MAX_NO_ATTEMPTS) {
         scheduleStickFigureTakeaway()
@@ -230,17 +334,37 @@ function runAway() {
     const avoidTop = yesRect.top - pad
     const avoidBottom = yesRect.bottom + pad
 
+    // If chase is active, get buddy position to avoid
+    let buddyLeft = -1000, buddyRight = -1000, buddyTop = -1000, buddyBottom = -1000
+    const BUDDY_AVOID_RADIUS = 200  // Stay at least this far from buddy
+
+    if (chaseActive && takerPosition) {
+        buddyLeft = takerPosition.x - BUDDY_AVOID_RADIUS
+        buddyRight = takerPosition.x + 50 + BUDDY_AVOID_RADIUS
+        buddyTop = takerPosition.y - BUDDY_AVOID_RADIUS
+        buddyBottom = takerPosition.y + 100 + BUDDY_AVOID_RADIUS
+    }
+
     let randomX = margin / 2
     let randomY = maxY
     let found = false
-    for (let tries = 0; tries < 15; tries++) {
+
+    for (let tries = 0; tries < 25; tries++) {
         const x = margin / 2 + Math.random() * (maxX - margin / 2)
         const y = margin / 2 + Math.random() * (maxY - margin / 2)
         const noRight = x + btnW
         const noBottom = y + btnH
-        const overlapsX = x < avoidRight && noRight > avoidLeft
-        const overlapsY = y < avoidBottom && noBottom > avoidTop
-        if (!overlapsX || !overlapsY) {
+
+        // Check if overlaps with Yes button
+        const overlapsYes = (x < avoidRight && noRight > avoidLeft) &&
+                           (y < avoidBottom && noBottom > avoidTop)
+
+        // Check if too close to buddy
+        const nearBuddy = chaseActive && takerPosition &&
+                         (x < buddyRight && noRight > buddyLeft) &&
+                         (y < buddyBottom && noBottom > buddyTop)
+
+        if (!overlapsYes && !nearBuddy) {
             randomX = x
             randomY = y
             found = true
@@ -248,16 +372,19 @@ function runAway() {
         }
     }
 
-    if (found) {
-        noBtn.style.position = 'fixed'
-        noBtn.style.left = `${randomX}px`
-        noBtn.style.top = `${randomY}px`
-        noBtn.style.zIndex = '40'
-        return
+    if (!found) {
+        // Fallback: move to opposite side of screen from buddy
+        if (chaseActive && takerPosition) {
+            const buddyCenterX = takerPosition.x + 25
+            const buddyCenterY = takerPosition.y + 50
+            randomX = buddyCenterX > window.innerWidth / 2 ? margin : maxX - margin
+            randomY = buddyCenterY > window.innerHeight / 2 ? margin : maxY - margin
+        } else {
+            randomX = margin / 2 + Math.random() * (maxX - margin / 2)
+            randomY = margin / 2 + Math.random() * (maxY - margin / 2)
+        }
     }
 
-    randomX = margin / 2 + Math.random() * (maxX - margin / 2)
-    randomY = margin / 2 + Math.random() * (maxY - margin / 2)
     noBtn.style.position = 'fixed'
     noBtn.style.left = `${randomX}px`
     noBtn.style.top = `${randomY}px`
@@ -292,10 +419,10 @@ function triggerStickFigureTakeaway() {
     const TAKER_H = 100
     const CATCH_RADIUS = 55
     const LOCK_RADIUS = 90
-    const CHASE_SPEED = 0.005
-    const CHASE_SPEED_FAST = 0.018
-    const GRAB_DURATION = 500
-    const TAKEAWAY_DURATION = 2500
+    const CHASE_SPEED = 0.0028
+    const CHASE_SPEED_FAST = 0.01
+    const GRAB_DURATION = 600
+    const TAKEAWAY_DURATION = 4200
     const START_LEFT = -TAKER_W - 20
 
     // Peep from door game: single image, CSS handles bounce (walk/grab/run)
@@ -313,13 +440,15 @@ function triggerStickFigureTakeaway() {
 
     let takerX = START_LEFT
     let takerY = rect.top + rect.height / 2 - TAKER_H / 2
+    chaseActive = true
+    takerPosition = { x: takerX, y: takerY }
 
     const messageInterval = setInterval(() => {
         if (noButtonGone || !noBtn) {
             clearInterval(messageInterval)
             return
         }
-        noBtn.textContent = getRandomNoMessage()
+        noBtn.textContent = getChaseMessage()
     }, 1500)
 
     function getButtonCenter() {
@@ -332,6 +461,9 @@ function triggerStickFigureTakeaway() {
         const target = getButtonCenter()
         const dx = target.x - takerX
         const dy = target.y - takerY
+
+        // Update buddy position for runAway to use
+        takerPosition = { x: takerX, y: takerY }
         const dist = Math.sqrt(dx * dx + dy * dy)
 
         if (dist < CATCH_RADIUS) {
@@ -339,6 +471,14 @@ function triggerStickFigureTakeaway() {
             disableRunaway()
             taker.classList.remove('no-taken-taker-chase')
             taker.classList.add('no-taken-taker-grab')
+
+            // Show message immediately when caught
+            const container = document.querySelector('#vday-app .vday-container')
+            const msg = document.createElement('p')
+            msg.className = 'no-taken-msg'
+            msg.innerHTML = "You really thought<br>the 'No' button mattered? 😏"
+            container.appendChild(msg)
+
             setTimeout(() => {
                 taker.classList.remove('no-taken-taker-grab')
                 startTakeawayToNearestEdge()
@@ -412,11 +552,6 @@ function triggerStickFigureTakeaway() {
             if (progress >= 1) {
                 noBtn.style.display = 'none'
                 taker.remove()
-                const container = document.querySelector('#vday-app .vday-container')
-                const msg = document.createElement('p')
-                msg.className = 'no-taken-msg'
-                msg.textContent = "You really thought the 'No' button mattered? 😏"
-                container.appendChild(msg)
                 return
             }
             requestAnimationFrame(animateTakeaway)

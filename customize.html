@@ -12,8 +12,13 @@
         body {
             font-family: 'Nunito', sans-serif;
             min-height: 100vh;
+            min-height: 100dvh;
             background: linear-gradient(135deg, #fff0f3 0%, #ffe4e8 50%, #ffd6dc 100%);
-            padding: 24px;
+            padding: clamp(12px, 4vw, 24px);
+            padding-top: max(env(safe-area-inset-top, 0), clamp(12px, 4vw, 24px));
+            padding-bottom: max(env(safe-area-inset-bottom, 0), clamp(12px, 4vw, 24px));
+            padding-left: max(env(safe-area-inset-left, 0), clamp(12px, 4vw, 24px));
+            padding-right: max(env(safe-area-inset-right, 0), clamp(12px, 4vw, 24px));
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -24,13 +29,14 @@
         }
         h1 {
             color: #c41e5a;
-            font-size: 1.75rem;
+            font-size: clamp(1.35rem, 5vw, 1.75rem);
             margin-bottom: 8px;
             text-align: center;
+            line-height: 1.2;
         }
         .sub {
             color: #666;
-            font-size: 0.95rem;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
             text-align: center;
             margin-bottom: 20px;
             line-height: 1.4;
@@ -38,7 +44,7 @@
         .card {
             background: #fff;
             border-radius: 16px;
-            padding: 24px;
+            padding: clamp(16px, 4vw, 24px);
             box-shadow: 0 8px 32px rgba(196, 30, 90, 0.12);
             margin-bottom: 20px;
         }
@@ -63,11 +69,11 @@
         input[type="file"],
         textarea {
             width: 100%;
-            padding: 10px 12px;
+            padding: clamp(8px, 2.5vw, 10px) clamp(10px, 3vw, 12px);
             border: 2px solid #ffe4e8;
             border-radius: 10px;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
             margin-bottom: 16px;
         }
         textarea {
@@ -82,14 +88,15 @@
         .hint { font-size: 0.8rem; color: #888; margin-top: 4px; margin-bottom: 4px; }
         button {
             width: 100%;
-            padding: 14px 20px;
+            padding: clamp(12px, 3vw, 14px) clamp(16px, 4vw, 20px);
             border: none;
             border-radius: 12px;
             font-family: 'Nunito', sans-serif;
-            font-size: 1.1rem;
+            font-size: clamp(1rem, 3vw, 1.1rem);
             font-weight: 800;
             cursor: pointer;
             transition: transform 0.05s, box-shadow 0.2s;
+            min-height: 48px;
         }
         button:active { transform: scale(0.98); }
         .btn-primary {
@@ -139,15 +146,29 @@
         }
         .app-footer {
             position: fixed;
-            bottom: 10px;
+            bottom: calc(10px + env(safe-area-inset-bottom, 0));
             left: 0;
             right: 0;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: clamp(0.7rem, 2vw, 0.8rem);
             color: rgba(0, 0, 0, 0.45);
             z-index: 50;
             pointer-events: none;
-            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
+        @media screen and (max-width: 500px) {
+            .section-title {
+                font-size: clamp(0.9rem, 3vw, 1rem);
+            }
+            label {
+                font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            }
+            .hint {
+                font-size: clamp(0.75rem, 2vw, 0.8rem);
+            }
+            .btn-copy, .btn-open {
+                font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+                padding: clamp(10px, 2.5vw, 12px) clamp(14px, 3.5vw, 18px);
+            }
         }
     </style>
 </head>
@@ -225,8 +246,8 @@
         const LINK_BOX = document.getElementById('link-box');
         const ERR = document.getElementById('err');
 
-        const DEFAULT_OPENING = "Good Morning! I have got something for you";
-        const DEFAULT_CHAOS = "It's Valentine's Day 💕\nI had two options: be basic or treat you with a whole experience. 💅";
+        const DEFAULT_OPENING = "Good Morning!\nI have got something for you";
+        const DEFAULT_CHAOS = "It's Valentine's Day 💕\nI had two options: be basic or\ntreat you with a whole experience. 💅";
         const DEFAULT_WISH = "तू है तो लगता है कि है कोई जो मुझे चाह सकेगा,\nहाँ, मैं हूँ थोड़ा पागल, हूँ थोड़ा नासमझ,\nतेरे होने से है कोई जो मुझे मना सकेगा।\n\nतेरी आदतों में मेरी कितनी शरारतों ने घर पाया है,\nतेरे बिन ये दिल जाने कहाँ भटक जाएगा।\n\nसपनों का है एक घर मेरा, उजली सी छत वाला,\nसब कहते हैं — घर ऐसा सपनों में ही होता है।\n\nतेरे होने से ही वो घर आशियाना सा लगेगा,\nतेरे साथ ही हर लम्हा सुहाना सा रहेगा।\n\nतू है तो लगता है कि है कोई जो मुझे चाह सकेगा,\nमैं हूँ मोहब्बत के लायक बहुत —\nये कोई मुझे बता सकेगा।";
 
         function generateId() {

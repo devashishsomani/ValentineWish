@@ -13,6 +13,7 @@
     "//": "Hello! If you are having trouble running this command. Try changing Firefox Developer Edition to FirefoxDeveloperEdition",
     "start:darwin:linux": "browser-sync start --server --files '**/*.css, **/*.html, **/*.js, !node_modules/**/*' --port 7777 --startPath index.html",
     "dev": "browser-sync start --server --files '**/*.css, **/*.html, **/*.js, !node_modules/**/*' --port 7777 --startPath index.html",
+    "dev:static": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
