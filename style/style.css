@@ -32,7 +32,7 @@ body {
   justify-content: center;
   gap: 1.25rem;
   background: rgba(255, 240, 245, 0.92);
-  transition: opacity 0.4s ease;
+  transition: opacity 0.15s ease;
 }
 .intro-overlay.hidden {
   pointer-events: none;

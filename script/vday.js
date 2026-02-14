@@ -48,7 +48,12 @@ const noMessagesRandom = [
     "Still here?\nImpressive. But pointless. 😏",
     "My patience is infinite.\nYours? Not so much. ⏰",
     "Fun fact: 100% of people\nwho pressed Yes are happy. 📊",
-    "Your stubbornness is admirable.\nBut Yes is inevitable. 🎯"
+    "Your stubbornness is admirable.\nBut Yes is inevitable. 🎯",
+    "This is taking longer\nthan expected.\nJust press Yes? 🤷",
+    "New message:\nYes is the answer.\nNo wasn't even an option. 💁",
+    "Loading...\nYes unavoidable.\nPress to continue. ⏳",
+    "Breaking news:\nLocal person still\nclicking No. 📰",
+    "Warning: Continued use of\nNo button may result\nin cuteness overload. 🥰"
 ]
 
 // Messages shown during Peep chase (more contextual)
@@ -72,11 +77,16 @@ const noMessagesChase = [
     "I see you hiding there! 👁️",
     "Nowhere left to run! 🚀",
     "The buddy has locked on! 🎯",
-    "Surrender to Yes! 🏳️"
+    "Surrender to Yes! 🏳️",
+    "This chase ends\nwith Yes! 🏁",
+    "Running makes it\nmore fun! 🎮",
+    "You're making\nthe buddy work! 💪",
+    "Almost... there... 🎪",
+    "The buddy never\ngives up! 🦸"
 ]
 
 function getRandomMessageWithVariety(pool) {
-    // Pick a random message that's not in the last 3 messages shown
+    // Pick a random message that's not in the last 4 messages shown (increased gap)
     const availableMessages = pool.filter(m => !lastMessages.includes(m))
 
     // If we've shown too many messages and filtered them all, reset history
@@ -87,9 +97,9 @@ function getRandomMessageWithVariety(pool) {
 
     const selected = availableMessages[Math.floor(Math.random() * availableMessages.length)]
 
-    // Track last 3 messages to avoid repetition
+    // Track last 4 messages to avoid repetition (increased from 3)
     lastMessages.push(selected)
-    if (lastMessages.length > 3) {
+    if (lastMessages.length > 4) {
         lastMessages.shift()
     }
 
@@ -111,16 +121,16 @@ function getNoMessage(attemptNum) {
             msg = noMessages[noMessages.length - 1]
             isSequential = true
         } else {
-            // If runaway already enabled, show random message with variety
+            // If runaway already enabled, show random message with variety (100%)
             msg = getRandomMessageWithVariety(noMessagesRandom)
         }
     } else {
-        // After all sequential messages, show random with variety
+        // After all sequential messages, ALWAYS show random with variety (100%)
         msg = getRandomMessageWithVariety(noMessagesRandom)
     }
 
-    // Mix in random messages after attempt 7 (but not too frequently)
-    if (oneBased >= 7 && oneBased < MAX_NO_ATTEMPTS && Math.random() < 0.3) {
+    // After attempt 7, mix in random messages with HIGH frequency
+    if (oneBased >= 7 && oneBased < noMessages.length && Math.random() < 0.7) {
         msg = getRandomMessageWithVariety(noMessagesRandom)
         isSequential = false
     }
@@ -130,7 +140,7 @@ function getNoMessage(attemptNum) {
         const msgTemplate = msg  // Store before replacement
         if (!lastMessages.includes(msgTemplate)) {
             lastMessages.push(msgTemplate)
-            if (lastMessages.length > 3) {
+            if (lastMessages.length > 4) {
                 lastMessages.shift()
             }
         }
@@ -296,7 +306,12 @@ function showTeaseMessage(msg) {
 }
 
 function updateNoButtonText() {
-    noBtn.textContent = getNoMessage(noAttemptCount)
+    // During chase, use chase messages; otherwise use regular messages
+    if (chaseActive) {
+        noBtn.textContent = getChaseMessage()
+    } else {
+        noBtn.textContent = getNoMessage(noAttemptCount)
+    }
 }
 
 function handleNoClick() {
@@ -396,7 +411,8 @@ function runAway() {
     if (noButtonGone || !runawayListenersActive || justClicked) return
 
     noAttemptCount++
-    // Don't update text on hover - text only changes on actual clicks
+    // Update text on hover/touch - change message when button runs away
+    updateNoButtonText()
 
     if (noAttemptCount >= MAX_NO_ATTEMPTS) {
         scheduleStickFigureTakeaway()
@@ -487,7 +503,8 @@ function scheduleStickFigureTakeaway() {
 
 function triggerStickFigureTakeaway() {
     noBtn.classList.remove('no-btn-last-chance')
-    if (noBtn.dataset.originalText) noBtn.textContent = noBtn.dataset.originalText
+    // Set initial chase message
+    noBtn.textContent = getChaseMessage()
     const rect = noBtn.getBoundingClientRect()
     noBtn.style.position = 'fixed'
     noBtn.style.left = rect.left + 'px'
@@ -523,13 +540,8 @@ function triggerStickFigureTakeaway() {
     chaseActive = true
     takerPosition = { x: takerX, y: takerY }
 
-    const messageInterval = setInterval(() => {
-        if (noButtonGone || !noBtn) {
-            clearInterval(messageInterval)
-            return
-        }
-        noBtn.textContent = getChaseMessage()
-    }, 1500)
+    // Don't auto-change messages - only change on hover/touch interaction
+    // Messages will update when runAway() is called (user tries to touch/hover)
 
     function getButtonCenter() {
         const r = noBtn.getBoundingClientRect()

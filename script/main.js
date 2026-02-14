@@ -42,10 +42,7 @@ const loadConfigFromUrl = async () => {
   }
 
   window.__valentineConfigId = id;
-  if (config.name) {
-    const nameEl = document.getElementById("name");
-    if (nameEl) nameEl.innerText = config.name.endsWith("!") ? config.name : config.name + "!";
-  }
+  // Name is fixed as "Shruti!" in index.html — not overridden by config
   const openingEl = document.getElementById("greetingText");
   if (openingEl && config.openingLine) openingEl.innerText = config.openingLine;
   if (config.greetingText) {
@@ -53,8 +50,7 @@ const loadConfigFromUrl = async () => {
     if (el) el.innerHTML = config.greetingText.replace(/\n/g, "<br>");
   }
   if (config.wishText) document.getElementById("wishText").innerHTML = config.wishText.replace(/\n/g, "<br>");
-  if (config.photoDataUrl) document.getElementById("imagePath").setAttribute("src", config.photoDataUrl);
-  else if (config.imagePath) document.getElementById("imagePath").setAttribute("src", config.imagePath);
+  // Photo is fixed as img/vector.jpg in index.html — not overridden by config
   const vdayGif = document.querySelector("#vday-app #cat-gif");
   if (vdayGif && config.gifVdayDataUrl) vdayGif.setAttribute("src", config.gifVdayDataUrl);
   const yesGif = document.getElementById("yes-gif");
@@ -448,10 +444,12 @@ const fetchData = () => {
     .then((data) => {
       Object.keys(data).map((customData) => {
         if (data[customData] !== "") {
-          if (customData === "imagePath") {
-            document
-              .getElementById(customData)
-              .setAttribute("src", data[customData]);
+          // Skip name - fixed as "Shruti!" in index.html
+          if (customData === "name") {
+            return;
+          } else if (customData === "imagePath") {
+            // Skip imagePath - fixed as img/vector.jpg in index.html
+            return;
           } else if (customData === "openingLine" && document.getElementById("greetingText")) {
             document.getElementById("greetingText").innerText = data[customData] || "";
           } else if (customData === "greetingText" && document.getElementById("chaosLine")) {
@@ -503,6 +501,12 @@ const bindIntroButton = () => {
       e.preventDefault();
       e.stopPropagation();
       try {
+        // Ensure backdrop video is playing immediately
+        const backdrop = document.getElementById("valentine-backdrop");
+        if (backdrop && backdrop.paused) {
+          backdrop.play().catch(() => {});
+        }
+
         const app = document.getElementById("valentine-wish-app");
         const storyContainer = app ? app.querySelector(".container") : document.querySelector("#valentine-wish-app > .container");
         const firstSlide = app ? app.querySelector(".container > .one") : null;
@@ -566,6 +570,14 @@ const bindIntroButton = () => {
 };
 
 function init() {
+  // Start backdrop video immediately so it's ready when play button is clicked
+  const backdrop = document.getElementById("valentine-backdrop");
+  if (backdrop) {
+    backdrop.play().catch(() => {
+      // Autoplay might be blocked, will retry on button click
+    });
+  }
+
   resolveFetch().then(() => {
     const missingEl = document.getElementById("config-missing-overlay");
     if (missingEl && missingEl.style.display === "flex") return;
