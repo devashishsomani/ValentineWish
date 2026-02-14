@@ -611,6 +611,14 @@ function triggerStickFigureTakeaway() {
     peepImg.alt = 'Peep'
     peepImg.className = 'no-taken-taker-peep-img'
     taker.appendChild(peepImg)
+
+    // Add angry emoji under buddy face that moves with it
+    const buddyEmoji = document.createElement('div')
+    buddyEmoji.className = 'buddy-emoji'
+    buddyEmoji.textContent = '😠'
+    buddyEmoji.style.cssText = 'position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); font-size: 20px; z-index: 10; pointer-events: none;'
+    taker.appendChild(buddyEmoji)
+
     taker.style.left = START_LEFT + 'px'
     taker.style.top = (rect.top + rect.height / 2 - TAKER_H / 2) + 'px'
     taker.style.transform = 'none'
@@ -644,6 +652,10 @@ function triggerStickFigureTakeaway() {
             disableRunaway()
             taker.classList.remove('no-taken-taker-chase')
             taker.classList.add('no-taken-taker-grab')
+
+            // Change emoji to devil when caught
+            const buddyEmoji = taker.querySelector('.buddy-emoji')
+            if (buddyEmoji) buddyEmoji.textContent = '😈'
 
             // Show message immediately when caught
             const container = document.querySelector('#vday-app .vday-container')

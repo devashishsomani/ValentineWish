@@ -394,6 +394,7 @@ const animationTimeline = () => {
         opacity: 0,
         rotation: -180,
         visibility: "visible",
+        force3D: true,
       },
       {
         scale: 1,
@@ -401,6 +402,7 @@ const animationTimeline = () => {
         rotation: 0,
         visibility: "visible",
         ease: Back.easeOut,
+        force3D: true,
       },
       0.1,
       "-=1"
@@ -414,6 +416,7 @@ const animationTimeline = () => {
         yoyo: true,
         repeat: 2,
         ease: Power1.easeInOut,
+        force3D: true,
       },
       0.15,
       "+=0.5"

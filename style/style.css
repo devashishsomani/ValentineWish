@@ -583,6 +583,7 @@ body {
   visibility: hidden;
   z-index: 2;
   opacity: 0;
+  will-change: transform, opacity, visibility;
 }
 .eight svg path.heart-shape {
   fill: inherit;
@@ -1037,7 +1038,8 @@ body {
     max-width: 60vw !important;
   }
   .eight svg {
-    width: clamp(14px, 4vmin, 20px) !important;
+    width: clamp(16px, 4.5vmin, 22px) !important;
+    will-change: transform, opacity, visibility;
   }
 
   /* Reposition hearts for landscape - cluster around center where card appears */
@@ -1055,7 +1057,8 @@ body {
 /* Mobile portrait — adjust heart positions to fit better around card */
 @media screen and (orientation: portrait) and (max-width: 768px) {
   .eight svg {
-    width: clamp(18px, 5vmin, 24px) !important;
+    width: clamp(20px, 5.5vmin, 26px) !important;
+    will-change: transform, opacity, visibility;
   }
 
   .eight svg:nth-child(1) { top: 20vh; left: 6vw; }
@@ -1072,7 +1075,8 @@ body {
 /* Small phones (360px and under) - tighter heart positioning */
 @media screen and (orientation: portrait) and (max-width: 380px) {
   .eight svg {
-    width: clamp(16px, 4.5vmin, 22px) !important;
+    width: clamp(18px, 5vmin, 24px) !important;
+    will-change: transform, opacity, visibility;
   }
 
   .eight svg:nth-child(1) { top: 22vh; left: 8vw; }
