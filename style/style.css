@@ -1,6 +1,7 @@
 html {
   box-sizing: border-box;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -9,6 +10,15 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   min-height: 100dvh;
+  max-width: 100vw;
+}
+
+/* Prevent text and content from escaping viewport on mobile */
+#valentine-wish-app,
+#vday-app,
+#yes-app {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* Intro page: Click here + play (user gesture for music) */
@@ -35,6 +45,9 @@ body {
   font-weight: 700;
   color: #333;
   margin: 0;
+  padding: 0 5vw;
+  text-align: center;
+  max-width: 100%;
 }
 .intro-play-btn {
   display: inline-flex;
@@ -162,8 +175,10 @@ body {
   visibility: hidden;
   position: relative;
   z-index: 1;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
 .container div.six {
@@ -172,10 +187,12 @@ body {
   max-height: 92vh;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 0 max(3vw, 12px);
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
@@ -193,7 +210,10 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  top: clamp(8vh, 12vmin, 20vh);
+  top: clamp(6vh, 10vmin, 20vh);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .container > .one {
@@ -202,6 +222,10 @@ body {
 
 .one {
   font-size: clamp(1.75rem, 8vmin, 4.5rem);
+  padding: 0 2vw;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .one > img {
@@ -214,6 +238,9 @@ body {
 .two {
   font-size: clamp(0.9rem, 2.5vmin, 1.2rem);
   font-weight: lighter;
+  padding: 0 2vw;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 .start-play-btn {
@@ -269,6 +296,9 @@ body {
   margin: 0;
   line-height: 1.25;
   color: #000;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .two-b p {
@@ -299,7 +329,8 @@ body {
 }
 
 .four .text-box {
-  width: min(92%, 600px);
+  width: 100%;
+  max-width: min(92vw, 600px);
   margin: 0 auto;
   border: 3px solid #aaa;
   border-radius: 5px;
@@ -308,6 +339,8 @@ body {
   padding-bottom: clamp(28px, 6vw, 38px);
   position: relative;
   font-size: inherit;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
 }
 
 .four .chatbox-footer {
@@ -345,6 +378,9 @@ body {
   padding-left: 4vw;
   padding-right: 4vw;
   box-sizing: border-box;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .idea-3 strong {
@@ -363,14 +399,20 @@ body {
   display: inline-block;
 }
 
+.idea-6 {
+  max-width: 100%;
+  overflow: hidden;
+}
 .idea-6 span {
-  font-size: clamp(3rem, 18vmin, 15rem);
+  font-size: clamp(2.5rem, 14vmin, 15rem);
+  max-width: 100%;
 }
 
 .six {
   position: relative;
   width: 100%;
-  max-width: min(100%, 85vw);
+  max-width: 100%;
+  min-width: 0;
 }
 
 .six img.girl-dp {
@@ -474,10 +516,19 @@ body {
   fill: #9a90da;
 }
 
+.six .wish {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
 .wish-hbd {
   font-size: clamp(1.85em, 6vmin, 3em);
   margin: 0;
   color: #c41e5a;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
   /* text-transform: uppercase; */
 }
 
@@ -491,11 +542,16 @@ body {
   font-size: clamp(1rem, 2.8vmin, 1.4rem);
   line-height: 1.4;
   margin: 8px 0 0;
-  max-width: min(100%, 92vw);
+  width: 100%;
+  max-width: min(100%, calc(100vw - 24px));
   padding: 0 0.8em 12px;
   max-height: 54vh;
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  box-sizing: border-box;
 }
 
 .nine p {
@@ -503,6 +559,8 @@ body {
   font-weight: lighter;
   padding: 0 4vw;
   box-sizing: border-box;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 #replay {
@@ -640,40 +698,51 @@ body {
   }
 }
 
-/* Mobile */
+/* Mobile — keep all content on screen, smaller text */
 @media screen and (max-width: 500px) {
   .container {
     width: 100%;
-    padding-left: max(env(safe-area-inset-left, 0), 4vw);
-    padding-right: max(env(safe-area-inset-right, 0), 4vw);
+    padding-left: max(env(safe-area-inset-left, 0), 5vw);
+    padding-right: max(env(safe-area-inset-right, 0), 5vw);
+  }
+
+  .container > div {
+    top: clamp(4vh, 8vmin, 14vh);
   }
 
   .one {
-    font-size: clamp(1.5rem, 6.5vmin, 2.5rem);
+    font-size: clamp(1.35rem, 5.5vmin, 2.25rem);
   }
 
   .two,
   .screen-message {
-    font-size: clamp(1rem, 4.5vmin, 1.75rem);
+    font-size: clamp(0.9rem, 4vmin, 1.5rem);
   }
 
   .three {
-    font-size: clamp(1rem, 4.5vmin, 1.75rem);
+    font-size: clamp(0.9rem, 4vmin, 1.5rem);
   }
 
   .four {
-    font-size: clamp(0.95rem, 3.8vmin, 1.5rem);
+    font-size: clamp(0.85rem, 3.2vmin, 1.35rem);
+  }
+
+  .four .chatbox-caption,
+  .four .chatbox-footer {
+    max-width: 100%;
   }
 
   .four .text-box {
-    width: min(92%, 100%);
-    padding-right: clamp(40px, 12vw, 52px);
-    padding-bottom: clamp(24px, 8vw, 36px);
+    width: 100%;
+    max-width: 100%;
+    padding-right: clamp(36px, 10vw, 48px);
+    padding-bottom: clamp(20px, 6vw, 28px);
   }
 
   .text-box .fake-btn {
-    right: 5px;
-    bottom: 5px;
+    right: 4px;
+    bottom: 4px;
+    font-size: inherit;
   }
 
   .idea-5 span {
@@ -681,95 +750,112 @@ body {
   }
 
   .five p {
-    font-size: 1.4rem;
+    font-size: clamp(1rem, 2.8vmin, 1.35rem);
   }
 
   .five .idea-5 {
-    font-size: 2.4rem;
+    font-size: clamp(1.5rem, 5vmin, 2.2rem);
   }
 
   .idea-6 span {
-    font-size: clamp(3rem, 22vw, 8rem);
+    font-size: clamp(2.2rem, 16vmin, 6rem);
   }
 
   .six .hat {
-    width: 50px;
-    top: -20px;
+    width: clamp(40px, 10vmin, 50px);
+    top: -18px;
   }
 
   .six img.girl-dp {
-    max-width: min(46%, 220px);
-    width: min(46%, 220px);
+    max-width: min(46%, 200px);
+    width: min(46%, 200px);
   }
 
   .wish-hbd {
-    font-size: clamp(1.55em, 4.8vmin, 2em);
+    font-size: clamp(1.35em, 4.2vmin, 1.75em);
   }
 
   .wish-hbd-space {
-    min-width: 0.2em;
+    min-width: 0.15em;
   }
 
   .wish h5 {
-    font-size: clamp(0.94rem, 2.4vmin, 1.15rem);
+    font-size: clamp(0.85rem, 2.2vmin, 1.05rem);
     line-height: 1.35;
-    max-height: 50vh;
+    max-height: 48vh;
+    padding: 0 0.5em 10px;
   }
 
   .nine p {
-    font-size: 1.4rem;
+    font-size: clamp(0.95rem, 2.8vmin, 1.25rem);
     font-weight: lighter;
   }
 
   .start-play-btn {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 1rem;
+    width: clamp(36px, 9vmin, 40px);
+    height: clamp(36px, 9vmin, 40px);
+    line-height: clamp(36px, 9vmin, 40px);
+    font-size: clamp(0.9rem, 2.8vmin, 1rem);
   }
 }
 
-/* Small phones */
+/* Small phones — even smaller to fit */
 @media screen and (max-width: 380px) {
   .container {
     width: 100%;
-    padding-left: max(env(safe-area-inset-left, 0), 5vw);
-    padding-right: max(env(safe-area-inset-right, 0), 5vw);
+    padding-left: max(env(safe-area-inset-left, 0), 6vw);
+    padding-right: max(env(safe-area-inset-right, 0), 6vw);
+  }
+
+  .container > div {
+    top: clamp(3vh, 6vmin, 12vh);
   }
 
   .one {
-    font-size: clamp(1.35rem, 5.5vmin, 2rem);
+    font-size: clamp(1.2rem, 5vmin, 1.75rem);
   }
 
   .two,
   .screen-message {
-    font-size: clamp(0.9rem, 4vmin, 1.5rem);
+    font-size: clamp(0.8rem, 3.5vmin, 1.35rem);
   }
 
   .three {
-    font-size: clamp(0.9rem, 4vmin, 1.5rem);
+    font-size: clamp(0.8rem, 3.5vmin, 1.35rem);
   }
 
   .four {
-    font-size: clamp(0.85rem, 3.5vmin, 1.25rem);
+    font-size: clamp(0.75rem, 3vmin, 1.15rem);
+  }
+
+  .five p {
+    font-size: clamp(0.9rem, 2.5vmin, 1.2rem);
+  }
+
+  .five .idea-5 {
+    font-size: clamp(1.35rem, 4.5vmin, 2rem);
+  }
+
+  .idea-6 span {
+    font-size: clamp(1.8rem, 14vmin, 5rem);
   }
 
   .six img.girl-dp {
-    max-width: min(42%, 185px);
-    width: min(42%, 185px);
+    max-width: min(44%, 160px);
+    width: min(44%, 160px);
   }
 
   .wish-hbd {
-    font-size: clamp(1.4em, 4.2vmin, 1.8em);
+    font-size: clamp(1.2em, 3.8vmin, 1.5em);
   }
 
   .wish h5 {
-    font-size: clamp(0.88rem, 2.2vmin, 1.05rem);
-    line-height: 1.32;
-    max-height: 46vh;
+    font-size: clamp(0.78rem, 2vmin, 0.95rem);
+    line-height: 1.3;
+    max-height: 44vh;
   }
 
   .nine p {
-    font-size: 1.25rem;
+    font-size: clamp(0.85rem, 2.5vmin, 1.1rem);
   }
 }
