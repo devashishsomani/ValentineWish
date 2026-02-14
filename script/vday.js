@@ -29,7 +29,7 @@ const noMessages = [
     "Denial is a river…\nbut we're not in Egypt. 🌊",
     "Be honest…\nyour finger is tired.\nJust press Yes. 😅",
     "You're clicking 'No'\nbut smiling, aren't you? 😏",
-    "After {sequence_number} no's,\nI'm still here.\nThat's commitment. 💪",
+    "I can do this all day.\nCan you? 💪",
     "At this point,\nit's destiny. ✨",
     "The universe is begging\nyou to press Yes. 🌌",
     "One more 'No' and\nI'm sending the little buddy. 😊"
@@ -44,7 +44,11 @@ const noMessagesRandom = [
     "Plot twist:\nyou're gonna press Yes. 🎬",
     "Your future 🔮 self\nsays press Yes.",
     "The cat 🐱 is judging you.\nPress Yes.",
-    "Denial: level expert.\nBut Yes wins. 🏆"
+    "Denial: level expert.\nBut Yes wins. 🏆",
+    "Still here?\nImpressive. But pointless. 😏",
+    "My patience is infinite.\nYours? Not so much. ⏰",
+    "Fun fact: 100% of people\nwho pressed Yes are happy. 📊",
+    "Your stubbornness is admirable.\nBut Yes is inevitable. 🎯"
 ]
 
 // Messages shown during Peep chase (more contextual)
@@ -63,7 +67,12 @@ const noMessagesChase = [
     "Nice try running! 🏃‍♀️💨",
     "The buddy is\non a mission! 🎯",
     "Say goodbye to No! 👋",
-    "Too slow! ⚡"
+    "Too slow! ⚡",
+    "Can't outrun destiny! 🎪",
+    "I see you hiding there! 👁️",
+    "Nowhere left to run! 🚀",
+    "The buddy has locked on! 🎯",
+    "Surrender to Yes! 🏳️"
 ]
 
 function getRandomMessageWithVariety(pool) {
@@ -90,14 +99,17 @@ function getRandomMessageWithVariety(pool) {
 function getNoMessage(attemptNum) {
     const oneBased = Math.max(1, attemptNum)
     let msg
+    let isSequential = false
 
     if (oneBased <= noMessages.length - 1) {
         // Show sequential messages up to second-to-last
         msg = noMessages[oneBased - 1]
+        isSequential = true
     } else if (oneBased === noMessages.length) {
         // At the last index: only show "buddy" warning if runaway not yet enabled
         if (!runawayEnabled) {
             msg = noMessages[noMessages.length - 1]
+            isSequential = true
         } else {
             // If runaway already enabled, show random message with variety
             msg = getRandomMessageWithVariety(noMessagesRandom)
@@ -107,9 +119,21 @@ function getNoMessage(attemptNum) {
         msg = getRandomMessageWithVariety(noMessagesRandom)
     }
 
-    // Mix in random messages after attempt 7
-    if (oneBased >= 7 && oneBased < MAX_NO_ATTEMPTS && Math.random() < 0.35) {
+    // Mix in random messages after attempt 7 (but not too frequently)
+    if (oneBased >= 7 && oneBased < MAX_NO_ATTEMPTS && Math.random() < 0.3) {
         msg = getRandomMessageWithVariety(noMessagesRandom)
+        isSequential = false
+    }
+
+    // Track sequential messages too to prevent repetition if user clicks rapidly
+    if (isSequential) {
+        const msgTemplate = msg  // Store before replacement
+        if (!lastMessages.includes(msgTemplate)) {
+            lastMessages.push(msgTemplate)
+            if (lastMessages.length > 3) {
+                lastMessages.shift()
+            }
+        }
     }
 
     return msg.replace(/\{sequence_number\}/g, String(oneBased))

@@ -86,8 +86,16 @@ Visit **[customize.html](https://devashishsomani.github.io/ValentineWish/customi
 1. Fill in the form with your customizations
 2. Click "Generate my link"
 3. Get a unique URL with ID (e.g., `index.html?v=abc123xyz`)
-4. Share the link — customizations are stored in browser's localStorage
-5. **Note:** Link works best in the same browser; other devices show a fallback message
+4. Share the link — customizations work across devices!
+
+### 🌐 Cross-Device Support:
+- **With Node Server (node server.js):** ✅ Works on ALL devices
+  - Configurations saved to `.valentine-configs/` directory
+  - Accessed via API endpoints for true cross-device sharing
+  - Fully responsive design adapts to any screen size
+- **Static Hosting (GitHub Pages, etc.):** ⚠️ Same browser only
+  - Uses localStorage (browser-specific)
+  - Recipients on other devices see default experience with fallback message
 
 ## 📁 Project Structure
 
@@ -96,7 +104,8 @@ Visit **[customize.html](https://devashishsomani.github.io/ValentineWish/customi
 | `index.html` | Main app with intro, story, card, and Yes/No question |
 | `customize.html` | Customization form for creating personalized links |
 | `customize.json` | Default customization values (fallback) |
-| `script/main.js` | App flow, GSAP timeline animations, config loader |
+| `server.js` | Node.js server with API for cross-device custom links |
+| `script/main.js` | App flow, GSAP timeline animations, config loader (with API support) |
 | `script/vday.js` | Yes/No button logic, runaway mode, Peep chase animation |
 | `script/music.js` | Background music controls with play/pause/switch |
 | `style/style.css` | Main styles with responsive design (story sections) |
@@ -105,6 +114,7 @@ Visit **[customize.html](https://devashishsomani.github.io/ValentineWish/customi
 | `img/peep.png` | Peep character sprite (from ncase/door, public domain) |
 | `img/vector.jpg` | Default profile image |
 | `music/` | Background music files (MP3) |
+| `.valentine-configs/` | Saved custom configurations (generated, not in git) |
 
 ## 🛠 Tech Stack
 

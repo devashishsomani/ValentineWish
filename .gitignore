@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+# Custom Valentine configs (contain user data)
+.valentine-configs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

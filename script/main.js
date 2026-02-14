@@ -1,21 +1,46 @@
-// Parse ?v= config id and load from localStorage; apply to DOM and set window.__valentineConfigId
-const loadConfigFromUrl = () => {
+// Parse ?v= config id and load from server API or localStorage; apply to DOM and set window.__valentineConfigId
+const loadConfigFromUrl = async () => {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("v");
   if (!id) return;
   const key = "valentine_config_" + id;
   let config;
+
+  // Try to load from server API first (for cross-device access)
   try {
-    const raw = localStorage.getItem(key);
-    if (!raw) {
-      document.getElementById("config-missing-overlay").style.display = "flex";
-      return "missing";
+    const response = await fetch(`/api/config/${id}`);
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success && data.config) {
+        config = data.config;
+        // Also save to localStorage for faster future loads
+        try {
+          localStorage.setItem(key, JSON.stringify(config));
+        } catch (_) {}
+      }
     }
-    config = JSON.parse(raw);
-  } catch (e) {
+  } catch (_) {
+    // Server not available or network error - try localStorage
+  }
+
+  // Fall back to localStorage if server fetch failed
+  if (!config) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        config = JSON.parse(raw);
+      }
+    } catch (e) {
+      // localStorage failed too
+    }
+  }
+
+  // If still no config, show missing overlay
+  if (!config) {
     document.getElementById("config-missing-overlay").style.display = "flex";
     return "missing";
   }
+
   window.__valentineConfigId = id;
   if (config.name) {
     const nameEl = document.getElementById("name");
@@ -41,6 +66,12 @@ const loadConfigFromUrl = () => {
       const m = config.songDataUrl.match(/data:audio\/([^;]+)/);
       appAudioSource.setAttribute("type", m ? "audio/" + m[1] : "audio/mpeg");
     }
+    // Reload audio element to use the new source
+    const audioEl = document.getElementById("bg-music");
+    if (audioEl) audioEl.load();
+    // Hide music switch button since custom song is loaded (no other tracks to switch to)
+    const switchBtn = document.getElementById("music-switch");
+    if (switchBtn) switchBtn.style.display = "none";
   }
   return "applied";
 };
@@ -438,8 +469,8 @@ const fetchData = () => {
 };
 
 // Run: if ?v= and config missing, we already showed overlay; otherwise load config or fetch JSON, then run animation
-const resolveFetch = () => {
-  const urlConfig = loadConfigFromUrl();
+const resolveFetch = async () => {
+  const urlConfig = await loadConfigFromUrl();
   if (urlConfig === "missing") return Promise.resolve();
   if (urlConfig === "applied") return Promise.resolve();
   return fetchData();
