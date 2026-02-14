@@ -368,9 +368,10 @@ function handleNoClick() {
         runawayEnabled = true
     }
 
-    if (noAttemptCount >= MAX_NO_ATTEMPTS) {
+    // Only trigger buddy chase once when reaching MAX_NO_ATTEMPTS
+    // Don't return - allow continued interaction during chase
+    if (noAttemptCount >= MAX_NO_ATTEMPTS && !chaseActive && !pendingStickFigure) {
         scheduleStickFigureTakeaway()
-        return
     }
 }
 
@@ -474,7 +475,9 @@ function runAway() {
     // Update text on hover/touch - change message when button runs away
     updateNoButtonText()
 
-    if (noAttemptCount >= MAX_NO_ATTEMPTS) {
+    // Only trigger buddy chase once when reaching MAX_NO_ATTEMPTS
+    // After that, keep the chase running - don't call scheduleStickFigureTakeaway again
+    if (noAttemptCount >= MAX_NO_ATTEMPTS && !chaseActive && !pendingStickFigure) {
         scheduleStickFigureTakeaway()
     }
 
@@ -500,6 +503,15 @@ function runAway() {
     const minX = margin + safeLeft
     const minY = margin + safeTop
 
+    // Get current button position to ensure it moves far away
+    const currentRect = noBtn.getBoundingClientRect()
+    const currentX = currentRect.left
+    const currentY = currentRect.top
+    // Require significant movement distance, especially during chase
+    const MIN_MOVE_DISTANCE = chaseActive
+      ? (isMobile ? 200 : 300)  // Move even farther during chase
+      : (isMobile ? 150 : 200)
+
     const yesRect = yesBtn.getBoundingClientRect()
     const pad = isMobile ? 15 : 20
     const avoidLeft = yesRect.left - pad
@@ -523,11 +535,17 @@ function runAway() {
     let randomY = maxY
     let found = false
 
-    for (let tries = 0; tries < 25; tries++) {
+    // Try many times to find a good position that's far enough
+    for (let tries = 0; tries < 50; tries++) {
         const x = minX + Math.random() * (maxX - minX)
         const y = minY + Math.random() * (maxY - minY)
         const noRight = x + btnW
         const noBottom = y + btnH
+
+        // Calculate distance from current position
+        const distanceFromCurrent = Math.sqrt(
+            Math.pow(x - currentX, 2) + Math.pow(y - currentY, 2)
+        )
 
         // Check if overlaps with Yes button
         const overlapsYes = (x < avoidRight && noRight > avoidLeft) &&
@@ -538,7 +556,10 @@ function runAway() {
                          (x < buddyRight && noRight > buddyLeft) &&
                          (y < buddyBottom && noBottom > buddyTop)
 
-        if (!overlapsYes && !nearBuddy) {
+        // Ensure button moves far enough away from current position
+        const farEnough = distanceFromCurrent >= MIN_MOVE_DISTANCE
+
+        if (!overlapsYes && !nearBuddy && farEnough) {
             randomX = x
             randomY = y
             found = true
@@ -584,7 +605,16 @@ function scheduleStickFigureTakeaway() {
 
 function triggerStickFigureTakeaway() {
     noBtn.classList.remove('no-btn-last-chance')
-    // Set initial chase message
+
+    // Reset all interaction flags to prevent auto-message changes at start of chase
+    cursorMoved = false
+    justMoved = true
+    justClicked = false
+    lastRunAwayTime = Date.now() // Prevent immediate runAway via time throttling
+    // Set cooldown to prevent immediate runAway calls when buddy starts
+    setTimeout(() => { justMoved = false }, 1000)
+
+    // Set initial chase message (only this one change should happen)
     noBtn.textContent = getChaseMessage()
     const rect = noBtn.getBoundingClientRect()
     noBtn.style.position = 'fixed'
@@ -612,11 +642,11 @@ function triggerStickFigureTakeaway() {
     peepImg.className = 'no-taken-taker-peep-img'
     taker.appendChild(peepImg)
 
-    // Add angry emoji under buddy face that moves with it
+    // Add angry emoji on buddy face that moves with it
     const buddyEmoji = document.createElement('div')
     buddyEmoji.className = 'buddy-emoji'
     buddyEmoji.textContent = '😠'
-    buddyEmoji.style.cssText = 'position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); font-size: 20px; z-index: 10; pointer-events: none;'
+    buddyEmoji.style.cssText = 'position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: 24px; z-index: 10; pointer-events: none;'
     taker.appendChild(buddyEmoji)
 
     taker.style.left = START_LEFT + 'px'
@@ -671,9 +701,9 @@ function triggerStickFigureTakeaway() {
             return
         }
 
-        if (dist < LOCK_RADIUS) {
-            disableRunaway()
-        }
+        // Keep button interactive even when buddy is close - don't disable runaway
+        // Only disable when actually caught (CATCH_RADIUS check above)
+        // Buddy speeds up when close, but user can still make button run away
         const speed = dist < LOCK_RADIUS ? CHASE_SPEED_FAST : CHASE_SPEED
         takerX += dx * speed
         takerY += dy * speed

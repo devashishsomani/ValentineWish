@@ -386,40 +386,17 @@ const animationTimeline = () => {
       [],
       "+=0.2"
     )
-    .staggerFromTo(
-      ".eight svg",
-      1,
-      {
-        scale: 0,
-        opacity: 0,
-        rotation: -180,
-        visibility: "visible",
-        force3D: true,
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        rotation: 0,
-        visibility: "visible",
-        ease: Back.easeOut,
-        force3D: true,
-      },
-      0.1,
-      "-=1"
-    )
     .staggerTo(
       ".eight svg",
-      1.2,
+      1.5,
       {
-        scale: 1.2,
-        opacity: 0.8,
-        yoyo: true,
-        repeat: 2,
-        ease: Power1.easeInOut,
-        force3D: true,
+        visibility: "visible",
+        opacity: 0,
+        scale: 80,
+        repeat: 3,
+        repeatDelay: 1.4,
       },
-      0.15,
-      "+=0.5"
+      0.3
     )
     .staggerFromTo(
       ".baloons img",
