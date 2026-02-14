@@ -85,74 +85,74 @@ body {
 /* App-wide music toggle (index: ValentineWish + v-day) — responsive */
 #music-toggle {
   position: fixed;
-  bottom: calc(max(12px, 2vmin) + env(safe-area-inset-bottom, 0));
+  bottom: calc(50px + env(safe-area-inset-bottom, 0));
   right: calc(max(12px, 2vmin) + env(safe-area-inset-right, 0));
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   border: none;
   border-radius: 50%;
-  width: clamp(44px, 12vmin, 52px);
-  height: clamp(44px, 12vmin, 52px);
-  font-size: clamp(1.1rem, 3.5vmin, 1.4rem);
+  width: 42px;
+  height: 42px;
+  font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s;
   z-index: 100;
 }
 #music-toggle:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 #music-switch {
   position: fixed;
-  bottom: calc(max(12px, 2vmin) + env(safe-area-inset-bottom, 0));
-  right: calc(max(64px, 16vmin) + env(safe-area-inset-right, 0));
-  background: rgba(255, 255, 255, 0.9);
+  bottom: calc(50px + env(safe-area-inset-bottom, 0));
+  right: calc(max(58px, 15vmin) + env(safe-area-inset-right, 0));
+  background: rgba(255, 255, 255, 0.95);
   border: none;
   border-radius: 50%;
-  width: clamp(44px, 12vmin, 52px);
-  height: clamp(44px, 12vmin, 52px);
-  font-size: clamp(1.1rem, 3.5vmin, 1.4rem);
+  width: 42px;
+  height: 42px;
+  font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s;
   z-index: 100;
 }
 #music-switch:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 /* Mobile: smaller buttons positioned higher to avoid footer text overlap */
 @media screen and (max-width: 768px) {
   #music-toggle,
   #music-switch {
-    width: clamp(40px, 10vmin, 44px);
-    height: clamp(40px, 10vmin, 44px);
-    font-size: clamp(1rem, 3vmin, 1.2rem);
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
   }
   #music-toggle {
-    bottom: calc(45px + env(safe-area-inset-bottom, 0));
-    right: calc(max(10px, 2.5vw) + env(safe-area-inset-right, 0));
+    bottom: calc(48px + env(safe-area-inset-bottom, 0));
+    right: calc(10px + env(safe-area-inset-right, 0));
   }
   #music-switch {
-    bottom: calc(45px + env(safe-area-inset-bottom, 0));
-    right: calc(max(54px, 13vw) + env(safe-area-inset-right, 0));
+    bottom: calc(48px + env(safe-area-inset-bottom, 0));
+    right: calc(52px + env(safe-area-inset-right, 0));
   }
 }
 
 @media screen and (max-width: 420px) {
   #music-toggle {
-    bottom: calc(40px + env(safe-area-inset-bottom, 0));
+    bottom: calc(45px + env(safe-area-inset-bottom, 0));
     right: calc(8px + env(safe-area-inset-right, 0));
-    width: 38px;
-    height: 38px;
-    font-size: 0.95rem;
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
   }
   #music-switch {
-    bottom: calc(40px + env(safe-area-inset-bottom, 0));
-    right: calc(50px + env(safe-area-inset-right, 0));
-    width: 38px;
-    height: 38px;
-    font-size: 0.95rem;
+    bottom: calc(45px + env(safe-area-inset-bottom, 0));
+    right: calc(48px + env(safe-area-inset-right, 0));
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
   }
 }
 
@@ -164,14 +164,12 @@ body {
   text-align: center;
   font-family: "Nunito", sans-serif;
   font-size: clamp(0.65rem, 2vmin, 0.8rem);
-  color: rgba(0, 0, 0, 0.55);
+  color: rgba(0, 0, 0, 0.6);
   z-index: 150;
   pointer-events: none;
   padding: 8px max(12px, 3vw) calc(10px + env(safe-area-inset-bottom, 0));
   box-sizing: border-box;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5) 0%, transparent 100%);
 }
 
 #valentine-wish-app {

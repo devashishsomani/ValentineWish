@@ -239,24 +239,23 @@
 #vday-app #music-toggle,
 #yes-app #music-toggle {
     position: fixed;
-    bottom: 20px;
+    bottom: 50px;
     right: 20px;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.95);
     border: none;
     border-radius: 50%;
-    width: 52px;
-    height: 52px;
-    font-size: 1.4rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
     cursor: pointer;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     transition: transform 0.2s;
     z-index: 100;
 }
 
 #vday-app #music-toggle:hover,
 #yes-app #music-toggle:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
 }
 
 /* v-day: tablet — fine-tune if needed (base is fluid) */
@@ -267,21 +266,22 @@
     }
     #vday-app #music-toggle,
     #yes-app #music-toggle {
-        bottom: calc(45px + env(safe-area-inset-bottom, 0));
-        width: 44px;
-        height: 44px;
-        font-size: 1.2rem;
+        bottom: calc(48px + env(safe-area-inset-bottom, 0));
+        right: calc(10px + env(safe-area-inset-right, 0));
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
     }
 }
 
 @media screen and (max-width: 420px) {
     #vday-app #music-toggle,
     #yes-app #music-toggle {
-        bottom: calc(40px + env(safe-area-inset-bottom, 0));
+        bottom: calc(45px + env(safe-area-inset-bottom, 0));
         right: calc(8px + env(safe-area-inset-right, 0));
-        width: 38px;
-        height: 38px;
-        font-size: 0.95rem;
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
     }
 }
 
@@ -788,35 +788,35 @@ body.yes-page .yes-message { order: 2; }
 
 body.yes-page #music-toggle {
     position: fixed;
-    bottom: 20px;
+    bottom: 50px;
     right: 20px;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.95);
     border: none;
     border-radius: 50%;
-    width: 52px;
-    height: 52px;
-    font-size: 1.4rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
     cursor: pointer;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     z-index: 100;
 }
 
 @media screen and (max-width: 768px) {
     body.yes-page #music-toggle {
-        bottom: calc(45px + env(safe-area-inset-bottom, 0));
-        width: 44px;
-        height: 44px;
-        font-size: 1.2rem;
+        bottom: calc(48px + env(safe-area-inset-bottom, 0));
+        right: calc(10px + env(safe-area-inset-right, 0));
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
     }
 }
 
 @media screen and (max-width: 420px) {
     body.yes-page #music-toggle {
-        bottom: calc(40px + env(safe-area-inset-bottom, 0));
+        bottom: calc(45px + env(safe-area-inset-bottom, 0));
         right: calc(8px + env(safe-area-inset-right, 0));
-        width: 38px;
-        height: 38px;
-        font-size: 0.95rem;
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
     }
 }
