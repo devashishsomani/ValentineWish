@@ -180,6 +180,7 @@ let takerPosition = null  // Track buddy position during chase
 let lastMessages = []  // Track last few messages to avoid repetition
 let justClicked = false  // Prevent immediate runaway after click
 let justMoved = false    // Prevent immediate runaway after button moves
+let lastRunAwayTime = 0  // Track last time runAway was called to prevent rapid consecutive triggers
 
 const STICK_FIGURE_WARNING = "⚠️ Last chance! The little buddy is coming... 😊🎁💕"
 
@@ -427,6 +428,13 @@ function disableRunaway() {
 function runAway() {
     if (noButtonGone || !runawayListenersActive || justClicked || justMoved) return
 
+    // Prevent rapid consecutive triggers - require at least 300ms between runAway calls
+    // During chase, require even more time (600ms) to prevent message spam
+    const now = Date.now()
+    const minInterval = chaseActive ? 600 : 300
+    if (now - lastRunAwayTime < minInterval) return
+    lastRunAwayTime = now
+
     noAttemptCount++
     // Update text on hover/touch - change message when button runs away
     updateNoButtonText()
@@ -436,8 +444,10 @@ function runAway() {
     }
 
     // Set flag to prevent immediate retrigger if button lands under cursor/finger
+    // During chase, use longer cooldown to prevent rapid re-triggering
     justMoved = true
-    setTimeout(() => { justMoved = false }, 800)
+    const cooldown = chaseActive ? 1500 : 800
+    setTimeout(() => { justMoved = false }, cooldown)
 
     const margin = 20
     const btnW = noBtn.offsetWidth

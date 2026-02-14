@@ -519,9 +519,9 @@ const bindIntroButton = () => {
       e.preventDefault();
       e.stopPropagation();
       try {
-        // Start backdrop video when play button is clicked
+        // Backdrop video is already playing (autoplay), just ensure it continues
         const backdrop = document.getElementById("valentine-backdrop");
-        if (backdrop) {
+        if (backdrop && backdrop.paused) {
           backdrop.play().catch(() => {});
         }
 
@@ -588,6 +588,14 @@ const bindIntroButton = () => {
 };
 
 function init() {
+  // Ensure backdrop video starts playing immediately (already has autoplay, but some browsers may block it)
+  const backdrop = document.getElementById("valentine-backdrop");
+  if (backdrop && backdrop.paused) {
+    backdrop.play().catch(() => {
+      // Autoplay blocked - will retry when play button is clicked
+    });
+  }
+
   resolveFetch().then(() => {
     const missingEl = document.getElementById("config-missing-overlay");
     if (missingEl && missingEl.style.display === "flex") return;
