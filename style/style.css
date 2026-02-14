@@ -571,68 +571,69 @@ body {
 }
 
 .eight svg {
-  width: clamp(16px, 5vmin, 25px);
+  width: clamp(20px, 6vmin, 30px);
   position: absolute;
   top: 0;
   left: 0;
   visibility: hidden;
-  z-index: -1;
+  z-index: 2;
+  opacity: 0;
 }
 .eight svg path.heart-shape {
   fill: inherit;
 }
 
 .eight svg:nth-child(1) {
-  top: 7vh;
-  left: 5vw;
+  top: 15vh;
+  left: 8vw;
   fill: #bd6ecf;
 }
 
 .eight svg:nth-child(2) {
-  top: 23vh;
-  left: 35vw;
+  top: 25vh;
+  left: 45vw;
   fill: #7dd175;
 }
 
 .eight svg:nth-child(3) {
-  top: 33vh;
-  left: 23vw;
+  top: 35vh;
+  left: 15vw;
   fill: #349d8b;
 }
 
 .eight svg:nth-child(4) {
-  top: 43vh;
-  left: 57vw;
+  top: 45vh;
+  left: 70vw;
   fill: #347a9d;
 }
 
 .eight svg:nth-child(5) {
-  top: 68vh;
-  left: 7vw;
+  top: 55vh;
+  left: 10vw;
   fill: #c66053;
 }
 
 .eight svg:nth-child(6) {
-  top: 42vh;
-  left: 77vw;
+  top: 40vh;
+  left: 85vw;
   fill: #bfaa40;
 }
 
 .eight svg:nth-child(7) {
-  top: 68vh;
-  left: 83vw;
+  top: 60vh;
+  left: 80vw;
   fill: #e3bae8;
 }
 
 .eight svg:nth-child(8) {
-  top: 86vh;
-  left: 37vw;
+  top: 70vh;
+  left: 50vw;
   fill: #8762cb;
 }
 
 .eight svg:nth-child(9) {
-  top: 94vh;
-  left: 87vw;
+  top: 30vh;
+  left: 90vw;
   fill: #9a90da;
 }
 
@@ -1016,6 +1017,23 @@ body {
     max-width: 60vw !important;
   }
   .eight svg {
-    width: clamp(12px, 3vmin, 18px) !important;
+    width: clamp(14px, 4vmin, 20px) !important;
   }
+}
+
+/* Mobile portrait — adjust heart positions to fit better around card */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  .eight svg {
+    width: clamp(18px, 5vmin, 24px) !important;
+  }
+
+  .eight svg:nth-child(1) { top: 18vh; left: 5vw; }
+  .eight svg:nth-child(2) { top: 28vh; left: 48vw; }
+  .eight svg:nth-child(3) { top: 38vh; left: 12vw; }
+  .eight svg:nth-child(4) { top: 48vh; left: 75vw; }
+  .eight svg:nth-child(5) { top: 58vh; left: 8vw; }
+  .eight svg:nth-child(6) { top: 43vh; left: 88vw; }
+  .eight svg:nth-child(7) { top: 63vh; left: 82vw; }
+  .eight svg:nth-child(8) { top: 68vh; left: 45vw; }
+  .eight svg:nth-child(9) { top: 33vh; left: 92vw; }
 }

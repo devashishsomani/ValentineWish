@@ -386,6 +386,31 @@ const animationTimeline = () => {
       [],
       "+=0.2"
     )
+    .staggerFrom(
+      ".eight svg",
+      1,
+      {
+        scale: 0,
+        opacity: 0,
+        rotation: -180,
+        ease: Back.easeOut,
+      },
+      0.1,
+      "-=1"
+    )
+    .staggerTo(
+      ".eight svg",
+      1.2,
+      {
+        scale: 1.2,
+        opacity: 0.8,
+        yoyo: true,
+        repeat: 2,
+        ease: Power1.easeInOut,
+      },
+      0.15,
+      "+=0.5"
+    )
     .staggerFromTo(
       ".baloons img",
       2.5,
@@ -397,25 +422,18 @@ const animationTimeline = () => {
         opacity: 1,
         y: -1000,
       },
-      0.2
-    )
-    .staggerTo(
-      ".eight svg",
-      1.5,
-      {
-        visibility: "visible",
-        opacity: 0,
-        scale: 80,
-        repeat: 3,
-        repeatDelay: 1.4,
-      },
-      0.3
+      0.2,
+      "-=2"
     )
     .to(".six", 0.5, {
       opacity: 0,
       y: 30,
       zIndex: "-1",
     })
+    .to(".eight svg", 0.3, {
+      opacity: 0,
+      scale: 0,
+    }, "-=0.3")
     .staggerFrom(".nine p", 1, ideaTextTrans, 1.2)
     .to({}, 3.5, {}); // delay before switching to v-day so .nine message is read
 
@@ -501,9 +519,9 @@ const bindIntroButton = () => {
       e.preventDefault();
       e.stopPropagation();
       try {
-        // Ensure backdrop video is playing immediately
+        // Start backdrop video when play button is clicked
         const backdrop = document.getElementById("valentine-backdrop");
-        if (backdrop && backdrop.paused) {
+        if (backdrop) {
           backdrop.play().catch(() => {});
         }
 
@@ -570,14 +588,6 @@ const bindIntroButton = () => {
 };
 
 function init() {
-  // Start backdrop video immediately so it's ready when play button is clicked
-  const backdrop = document.getElementById("valentine-backdrop");
-  if (backdrop) {
-    backdrop.play().catch(() => {
-      // Autoplay might be blocked, will retry on button click
-    });
-  }
-
   resolveFetch().then(() => {
     const missingEl = document.getElementById("config-missing-overlay");
     if (missingEl && missingEl.style.display === "flex") return;
