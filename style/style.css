@@ -987,12 +987,9 @@ body {
   }
 }
 
-/* Mobile portrait — hide decorative elements that appear at bottom */
+/* Mobile portrait — hide decorative balloons that appear at bottom */
 @media screen and (orientation: portrait) and (max-width: 768px) {
   .baloons img {
-    display: none !important;
-  }
-  .eight svg {
     display: none !important;
   }
 
