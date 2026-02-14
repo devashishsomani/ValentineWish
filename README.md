@@ -2,6 +2,8 @@
 
 A Valentine's Day web experience: intro, story timeline, and a “Will you be my Valentine?” card with a Yes/No choice. Say No enough times and **Peep** (the character from the door game) chases the No button, grabs it, and runs off with it.
 
+**Live:** [Valentine card](https://devashishsomani.github.io/ValentineWish/) · [Create your link (customize)](https://devashishsomani.github.io/ValentineWish/customize.html)
+
 ## Run locally
 
 ```bash
@@ -27,7 +29,7 @@ Opens at `http://localhost:7777` with live reload for HTML, CSS, and JS. On Wind
 
 ## Customize
 
-- **`customize.html`** — Set name, greeting, card title, photo URL, and wish/poem. Options are saved to **`customize.json`** and applied when the main app loads (see `script/main.js`).
+- **[customize.html](https://devashishsomani.github.io/ValentineWish/customize.html)** — Set name, greeting, card title, photo URL, and wish/poem. Options are saved to **`customize.json`** and applied when the main app loads (see `script/main.js`).
 
 ## Project layout
 
