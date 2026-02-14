@@ -179,6 +179,7 @@ let chaseActive = false
 let takerPosition = null  // Track buddy position during chase
 let lastMessages = []  // Track last few messages to avoid repetition
 let justClicked = false  // Prevent immediate runaway after click
+let justMoved = false    // Prevent immediate runaway after button moves
 
 const STICK_FIGURE_WARNING = "⚠️ Last chance! The little buddy is coming... 😊🎁💕"
 
@@ -381,7 +382,7 @@ function enableRunaway() {
 function handleTouchRunaway(e) {
     // Only run away if the button is actually being touched (not a scroll or accidental touch)
     // and the touch started on the button itself
-    if (!runawayListenersActive || noButtonGone || justClicked) return
+    if (!runawayListenersActive || noButtonGone || justClicked || justMoved) return
 
     // Get the touch point
     const touch = e.touches[0]
@@ -408,7 +409,7 @@ function disableRunaway() {
 }
 
 function runAway() {
-    if (noButtonGone || !runawayListenersActive || justClicked) return
+    if (noButtonGone || !runawayListenersActive || justClicked || justMoved) return
 
     noAttemptCount++
     // Update text on hover/touch - change message when button runs away
@@ -417,6 +418,10 @@ function runAway() {
     if (noAttemptCount >= MAX_NO_ATTEMPTS) {
         scheduleStickFigureTakeaway()
     }
+
+    // Set flag to prevent immediate retrigger if button lands under cursor/finger
+    justMoved = true
+    setTimeout(() => { justMoved = false }, 800)
 
     const margin = 20
     const btnW = noBtn.offsetWidth
