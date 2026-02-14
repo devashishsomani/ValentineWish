@@ -11,10 +11,12 @@
     background-color: #FFE4E8;
     font-family: 'Nunito', sans-serif;
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
     background-image:
         radial-gradient(circle at 15% 85%, #ffb3c1 0%, transparent 40%),
         radial-gradient(circle at 85% 15%, #ff8fa3 0%, transparent 40%),
@@ -61,16 +63,21 @@
     position: relative;
     z-index: 1;
     text-align: center;
-    padding: 40px 20px;
+    padding: clamp(16px, 5vmin, 40px) clamp(12px, 4vw, 20px);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 #vday-app h1 {
-    font-size: 2.4rem;
+    font-size: clamp(1.35rem, 5.5vmin, 2.4rem);
     color: #d63384;
     font-weight: 900;
-    margin-bottom: 20px;
+    margin-bottom: clamp(10px, 3vmin, 20px);
     text-shadow: 2px 2px 0px rgba(214, 51, 132, 0.2);
     animation: vdayWiggle 2s ease-in-out infinite;
+    padding: 0 2vw;
+    line-height: 1.2;
 }
 
 @keyframes vdayWiggle {
@@ -79,14 +86,16 @@
 }
 
 #vday-app .gif-container {
-    margin: 20px auto;
+    margin: clamp(12px, 3vmin, 20px) auto;
     display: flex;
     justify-content: center;
 }
 
 #vday-app #cat-gif {
-    width: 200px;
-    height: 200px;
+    width: min(200px, 45vmin);
+    height: min(200px, 45vmin);
+    max-width: 90vw;
+    max-height: 40vmin;
     object-fit: contain;
     filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15));
     transition: opacity 0.3s ease;
@@ -94,11 +103,12 @@
 
 #vday-app .buttons {
     display: flex;
-    gap: 20px;
+    gap: clamp(10px, 3vmin, 20px);
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
+    margin-top: clamp(16px, 4vmin, 30px);
     flex-wrap: wrap;
+    padding: 0 4vw;
 }
 
 #vday-app #yes-btn {
@@ -108,10 +118,10 @@
     color: white;
     border: none;
     border-radius: 16px;
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 4vmin, 1.6rem);
     font-weight: 900;
     font-family: 'Nunito', sans-serif;
-    padding: 18px 45px;
+    padding: clamp(12px, 3vmin, 18px) clamp(24px, 8vmin, 45px);
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.15s;
     box-shadow: 0 6px 20px rgba(76, 175, 80, 0.45);
@@ -132,13 +142,13 @@
     color: white;
     border: none;
     border-radius: 12px;
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 2.5vmin, 0.9rem);
     font-weight: 700;
     font-family: 'Nunito', sans-serif;
-    padding: 12px 16px;
-    min-width: 120px;
-    max-width: 280px;
-    min-height: 44px;
+    padding: clamp(10px, 2.5vmin, 12px) clamp(12px, 3vmin, 16px);
+    min-width: min(120px, 28vw);
+    max-width: min(280px, 85vw);
+    min-height: clamp(40px, 10vmin, 44px);
     line-height: 1.25;
     white-space: normal;
     cursor: pointer;
@@ -210,87 +220,72 @@
     transform: scale(1.1);
 }
 
-/* v-day: tablet */
+/* v-day: tablet — fine-tune if needed (base is fluid) */
 @media screen and (max-width: 768px) {
-    #vday-app .vday-container {
-        padding: 28px 16px;
-    }
-    #vday-app h1 {
-        font-size: 2rem;
-        margin-bottom: 16px;
-    }
-    #vday-app #cat-gif {
-        width: 180px;
-        height: 180px;
-    }
     #vday-app .buttons {
-        gap: 14px;
-        margin-top: 24px;
-    }
-    #vday-app #yes-btn {
-        font-size: 1.4rem;
-        padding: 14px 32px;
-    }
-    #vday-app #no-btn {
-        font-size: 0.85rem;
-        min-width: 100px;
-        max-width: 240px;
-        padding: 10px 12px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     #vday-app #music-toggle {
-        bottom: calc(20px + env(safe-area-inset-bottom, 0));
+        bottom: calc(max(12px, 2vmin) + env(safe-area-inset-bottom, 0));
     }
 }
 
-/* v-day: mobile */
+/* v-day: mobile portrait — stack buttons, full-width feel */
 @media screen and (max-width: 500px) {
-    #vday-app .vday-container {
-        padding: 20px 12px;
-    }
-    #vday-app h1 {
-        font-size: 1.6rem;
-        margin-bottom: 12px;
-    }
-    #vday-app #cat-gif {
-        width: 140px;
-        height: 140px;
-    }
     #vday-app .buttons {
         flex-direction: column;
-        gap: 12px;
-        margin-top: 20px;
+        gap: clamp(10px, 2.5vmin, 12px);
     }
     #vday-app #yes-btn {
-        font-size: 1.25rem;
-        padding: 14px 28px;
         width: 100%;
-        max-width: 200px;
+        max-width: min(200px, 75vw);
     }
     #vday-app #no-btn {
-        font-size: 0.8rem;
-        max-width: 200px;
-        min-height: 40px;
+        max-width: min(200px, 75vw);
     }
     #vday-app #tease-toast {
-        font-size: 0.9rem;
+        font-size: clamp(0.85rem, 2.5vmin, 0.9rem);
     }
     #vday-app .no-taken-msg {
-        font-size: 1rem;
+        font-size: clamp(0.9rem, 2.5vmin, 1rem);
     }
 }
 
-/* v-day: small phones */
-@media screen and (max-width: 380px) {
+/* v-day: mobile landscape — use horizontal space, compact vertical */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    #vday-app .vday-container {
+        padding: clamp(8px, 2vmin, 20px) clamp(12px, 4vw, 24px);
+    }
     #vday-app h1 {
-        font-size: 1.4rem;
+        font-size: clamp(1.15rem, 4vmin, 1.6rem);
+        margin-bottom: clamp(6px, 1.5vmin, 12px);
     }
     #vday-app #cat-gif {
-        width: 120px;
-        height: 120px;
+        width: min(140px, 35vmin);
+        height: min(140px, 35vmin);
+        max-height: 28vh;
+    }
+    #vday-app .buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: clamp(8px, 2vmin, 14px);
+        margin-top: clamp(10px, 2vmin, 20px);
     }
     #vday-app #yes-btn {
-        font-size: 1.1rem;
-        padding: 12px 24px;
+        font-size: clamp(1rem, 3vmin, 1.25rem);
+        padding: clamp(10px, 2vmin, 14px) clamp(18px, 5vmin, 28px);
+    }
+    #vday-app #no-btn {
+        font-size: clamp(0.75rem, 2.2vmin, 0.85rem);
+        min-height: clamp(36px, 8vmin, 40px);
+    }
+}
+
+/* v-day: mobile portrait — comfortable vertical flow */
+@media screen and (orientation: portrait) and (max-width: 500px) {
+    #vday-app .vday-container {
+        padding: clamp(20px, 6vmin, 32px) clamp(12px, 4vw, 20px);
     }
 }
 
@@ -410,10 +405,13 @@
     position: relative;
     z-index: 1;
     text-align: center;
-    padding: 40px 20px;
+    padding: clamp(16px, 5vmin, 40px) clamp(12px, 4vw, 20px);
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 /* Keep Yes section children in flex flow (override main .container > div) */
 #yes-app .container > div,
@@ -424,31 +422,53 @@
     right: auto;
     top: auto;
 }
-#yes-app .yes-title { order: 0; }
-#yes-app .gif-container { order: 1; margin-bottom: 24px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; width: 100%; }
-#yes-app .yes-message { order: 2; margin-top: 0; }
+#yes-app .yes-title {
+    order: 0;
+    font-size: clamp(1.4rem, 5.5vmin, 2.6rem);
+    padding: 0 4vw;
+    line-height: 1.2;
+}
+#yes-app .gif-container { order: 1; margin-bottom: clamp(12px, 3vmin, 24px); flex-shrink: 0; display: flex; justify-content: center; align-items: center; width: 100%; }
+#yes-app .yes-message {
+    order: 2;
+    margin-top: 0;
+    font-size: clamp(0.95rem, 2.8vmin, 1.35rem);
+    padding: 0 4vw;
+    line-height: 1.4;
+}
 #yes-app #yes-gif {
-    width: 260px;
-    height: 260px;
+    width: min(260px, 55vmin);
+    height: min(260px, 55vmin);
+    max-width: 85vw;
+    max-height: 45vmin;
     display: block;
     margin: 0 auto;
+    object-fit: contain;
 }
-@media screen and (max-width: 768px) {
-    #yes-app .container { padding: 28px 16px; }
-    #yes-app .yes-title { font-size: 2.2rem; }
-    #yes-app #yes-gif { width: 200px; height: 200px; }
-    #yes-app .yes-message { font-size: 1.2rem; }
+
+/* Yes section: mobile landscape — compact vertical */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    #yes-app .container {
+        padding: clamp(8px, 2vmin, 20px) clamp(12px, 4vw, 24px);
+    }
+    #yes-app .yes-title {
+        font-size: clamp(1.15rem, 4vmin, 1.6rem);
+    }
+    #yes-app #yes-gif {
+        width: min(160px, 38vmin);
+        height: min(160px, 38vmin);
+        max-height: 32vh;
+    }
+    #yes-app .yes-message {
+        font-size: clamp(0.85rem, 2.4vmin, 1.1rem);
+    }
 }
-@media screen and (max-width: 500px) {
-    #yes-app .container { padding: 20px 12px; }
-    #yes-app .yes-title { font-size: 1.75rem; }
-    #yes-app #yes-gif { width: 160px; height: 160px; }
-    #yes-app .yes-message { font-size: 1.05rem; margin-top: 16px; }
-}
-@media screen and (max-width: 380px) {
-    #yes-app .yes-title { font-size: 1.5rem; }
-    #yes-app #yes-gif { width: 130px; height: 130px; }
-    #yes-app .yes-message { font-size: 0.95rem; }
+
+/* Yes section: mobile portrait — comfortable spacing */
+@media screen and (orientation: portrait) and (max-width: 500px) {
+    #yes-app .container {
+        padding: clamp(20px, 6vmin, 40px) clamp(12px, 4vw, 20px);
+    }
 }
 
 /* Yes page (yes.html) - full page styles when body has .yes-page */

@@ -59,17 +59,27 @@ body {
   transform: scale(0.98);
 }
 
-/* App-wide music toggle (index: ValentineWish + v-day) */
+/* Intro: mobile landscape — smaller so it fits height */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .intro-text { font-size: clamp(0.95rem, 3vmin, 1.2rem); }
+  .intro-play-btn {
+    width: clamp(40px, 12vmin, 56px);
+    height: clamp(40px, 12vmin, 56px);
+    font-size: clamp(1rem, 3vmin, 1.3rem);
+  }
+}
+
+/* App-wide music toggle (index: ValentineWish + v-day) — responsive */
 #music-toggle {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: calc(max(12px, 2vmin) + env(safe-area-inset-bottom, 0));
+  right: calc(max(12px, 2vmin) + env(safe-area-inset-right, 0));
   background: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
-  width: 52px;
-  height: 52px;
-  font-size: 1.4rem;
+  width: clamp(44px, 12vmin, 52px);
+  height: clamp(44px, 12vmin, 52px);
+  font-size: clamp(1.1rem, 3.5vmin, 1.4rem);
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s;
@@ -81,14 +91,14 @@ body {
 
 #music-switch {
   position: fixed;
-  bottom: 20px;
-  right: 82px;
+  bottom: calc(max(12px, 2vmin) + env(safe-area-inset-bottom, 0));
+  right: calc(max(64px, 16vmin) + env(safe-area-inset-right, 0));
   background: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
-  width: 52px;
-  height: 52px;
-  font-size: 1.4rem;
+  width: clamp(44px, 12vmin, 52px);
+  height: clamp(44px, 12vmin, 52px);
+  font-size: clamp(1.1rem, 3.5vmin, 1.4rem);
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s;
@@ -96,12 +106,10 @@ body {
 }
 @media screen and (max-width: 420px) {
   #music-toggle {
-    right: 20px;
-    bottom: calc(20px + env(safe-area-inset-bottom, 0));
+    right: calc(max(12px, 3vw) + env(safe-area-inset-right, 0));
   }
   #music-switch {
-    right: 20px;
-    bottom: calc(82px + env(safe-area-inset-bottom, 0));
+    right: calc(max(56px, 14vw) + env(safe-area-inset-right, 0));
   }
 }
 #music-switch:hover {
@@ -110,16 +118,17 @@ body {
 
 .app-footer {
   position: fixed;
-  bottom: 10px;
+  bottom: 0;
   left: 0;
   right: 0;
   text-align: center;
   font-family: "Nunito", sans-serif;
-  font-size: 0.8rem;
+  font-size: clamp(0.65rem, 2vmin, 0.8rem);
   color: rgba(0, 0, 0, 0.45);
   z-index: 50;
   pointer-events: none;
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding: 8px max(12px, 3vw) calc(10px + env(safe-area-inset-bottom, 0));
+  box-sizing: border-box;
 }
 
 #valentine-wish-app {
@@ -144,14 +153,17 @@ body {
 .container {
   height: 100vh;
   height: 100dvh;
-  width: min(100vw, 100vh, 100%);
+  width: 100%;
   max-width: 100vw;
   margin: 0 auto;
+  padding-left: max(env(safe-area-inset-left, 0), 2vw);
+  padding-right: max(env(safe-area-inset-right, 0), 2vw);
   text-align: center;
   visibility: hidden;
   position: relative;
   z-index: 1;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .container div.six {
@@ -164,8 +176,9 @@ body {
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
-  padding: 0 3vw;
+  padding: 0 max(3vw, 12px);
   box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
 .container div.seven,
@@ -207,12 +220,12 @@ body {
   display: inline-block;
   position: relative;
   z-index: 100;
-  margin-top: 1.25rem;
-  width: 48px;
-  height: 48px;
-  line-height: 48px;
+  margin-top: clamp(0.75rem, 2vmin, 1.25rem);
+  width: clamp(40px, 10vmin, 48px);
+  height: clamp(40px, 10vmin, 48px);
+  line-height: clamp(40px, 10vmin, 48px);
   text-align: center;
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 3vmin, 1.25rem);
   color: #fff;
   background: linear-gradient(135deg, #e91e8c 0%, #d63384 100%);
   border: none;
@@ -237,7 +250,7 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  top: 20vh;
+  top: clamp(10vh, 14vmin, 20vh);
   bottom: auto;
   display: flex;
   align-items: flex-start;
@@ -245,6 +258,8 @@ body {
   flex-direction: column;
   pointer-events: none;
   opacity: 0;
+  padding: 0 2vw;
+  box-sizing: border-box;
 }
 
 /* Same formatting for chaos line and "E-cards?" line — fluid for device ratio */
@@ -258,6 +273,7 @@ body {
 
 .two-b p {
   margin: 0;
+  max-width: 100%;
 }
 
 .three {
@@ -266,6 +282,9 @@ body {
 
 .three p {
   margin: 0;
+  padding: 0 2vw;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .four {
@@ -323,6 +342,9 @@ body {
   position: absolute;
   left: 0;
   right: 0;
+  padding-left: 4vw;
+  padding-right: 4vw;
+  box-sizing: border-box;
 }
 
 .idea-3 strong {
@@ -342,7 +364,7 @@ body {
 }
 
 .idea-6 span {
-  font-size: 15rem;
+  font-size: clamp(3rem, 18vmin, 15rem);
 }
 
 .six {
@@ -370,7 +392,8 @@ body {
 .baloons img {
   display: inline-block;
   position: absolute;
-  width: 200px;
+  width: min(200px, 45vmin);
+  max-width: 90vw;
 }
 
 .baloons img:nth-child(even) {
@@ -386,7 +409,7 @@ body {
 }
 
 .eight svg {
-  width: 25px;
+  width: clamp(16px, 5vmin, 25px);
   position: absolute;
   top: 0;
   left: 0;
@@ -478,6 +501,8 @@ body {
 .nine p {
   font-size: clamp(1rem, 3vmin, 2rem);
   font-weight: lighter;
+  padding: 0 4vw;
+  box-sizing: border-box;
 }
 
 #replay {
@@ -524,11 +549,35 @@ body {
   .wish-hbd { font-size: clamp(1.3em, 4vmin, 1.8em); }
 }
 
+/* Mobile landscape — explicit orientation tuning */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .container {
+    padding-left: max(env(safe-area-inset-left, 0), 4vw);
+    padding-right: max(env(safe-area-inset-right, 0), 4vw);
+  }
+  .one { font-size: clamp(1.25rem, 5vmin, 2rem); }
+  .two, .screen-message, .three { font-size: clamp(0.95rem, 3.5vmin, 1.5rem); }
+  .four { font-size: clamp(0.9rem, 3vmin, 1.35rem); }
+  .five p { font-size: clamp(1rem, 2.8vmin, 1.5rem); }
+  .five .idea-5 { font-size: clamp(1.4rem, 4.5vmin, 2.2rem); }
+  .nine p { font-size: clamp(0.85rem, 2.5vmin, 1.2rem); }
+}
+
+/* Mobile portrait — ensure comfortable reading and tap targets */
+@media screen and (orientation: portrait) and (max-width: 500px) {
+  .container {
+    padding-left: max(env(safe-area-inset-left, 0), 4vw);
+    padding-right: max(env(safe-area-inset-right, 0), 4vw);
+  }
+}
+
 /* Tablet and small desktop */
 @media screen and (max-width: 768px) {
   .container {
-    width: min(95vw, 100%);
+    width: 100%;
     max-width: 100vw;
+    padding-left: max(env(safe-area-inset-left, 0), 3vw);
+    padding-right: max(env(safe-area-inset-right, 0), 3vw);
   }
 
   .one {
@@ -594,7 +643,9 @@ body {
 /* Mobile */
 @media screen and (max-width: 500px) {
   .container {
-    width: min(92vw, 100%);
+    width: 100%;
+    padding-left: max(env(safe-area-inset-left, 0), 4vw);
+    padding-right: max(env(safe-area-inset-right, 0), 4vw);
   }
 
   .one {
@@ -681,7 +732,9 @@ body {
 /* Small phones */
 @media screen and (max-width: 380px) {
   .container {
-    width: min(96vw, 100%);
+    width: 100%;
+    padding-left: max(env(safe-area-inset-left, 0), 5vw);
+    padding-right: max(env(safe-area-inset-right, 0), 5vw);
   }
 
   .one {
