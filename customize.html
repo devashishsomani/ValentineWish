@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create your Valentine link</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="img/heart.svg">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe4e8 50%, #ffd6dc 100%);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .wrap {
+            max-width: 560px;
+            width: 100%;
+        }
+        h1 {
+            color: #c41e5a;
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .sub {
+            color: #666;
+            font-size: 0.95rem;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(196, 30, 90, 0.12);
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #c41e5a;
+            margin: 20px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #ffe4e8;
+        }
+        .section-title:first-child { margin-top: 0; }
+        label {
+            display: block;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+        label .opt { font-weight: 400; color: #666; font-size: 0.85rem; }
+        input[type="text"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ffe4e8;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        textarea.long { min-height: 140px; }
+        input[type="file"] { padding: 8px; }
+        input:focus, textarea:focus { outline: none; border-color: #c41e5a; }
+        .row { margin-bottom: 16px; }
+        .row:last-child { margin-bottom: 0; }
+        .hint { font-size: 0.8rem; color: #888; margin-top: 4px; margin-bottom: 4px; }
+        button {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.05s, box-shadow 0.2s;
+        }
+        button:active { transform: scale(0.98); }
+        .btn-primary {
+            background: linear-gradient(135deg, #c41e5a, #a01848);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(196, 30, 90, 0.35);
+            margin-top: 16px;
+        }
+        .btn-primary:hover { box-shadow: 0 6px 20px rgba(196, 30, 90, 0.45); }
+        .result {
+            display: none;
+            text-align: center;
+        }
+        .result.show { display: block; }
+        .result h2 { color: #2d8a3e; font-size: 1.25rem; margin-bottom: 12px; }
+        .link-box {
+            background: #f8f8f8;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            word-break: break-all;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .btn-copy, .btn-open {
+            display: inline-block;
+            width: auto;
+            padding: 10px 20px;
+            margin: 4px;
+            font-size: 0.95rem;
+        }
+        .btn-copy { background: #333; color: #fff; }
+        .btn-open { background: #2d8a3e; color: #fff; }
+        .form-section { display: block; }
+        .form-section.hide { display: none; }
+        .err { color: #c41e5a; font-size: 0.9rem; margin-top: 8px; display: none; }
+        .err.show { display: block; }
+        .note {
+            background: #fff8fa;
+            border: 1px solid #ffe4e8;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .app-footer {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.45);
+            z-index: 50;
+            pointer-events: none;
+            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h1>💕 Create your Valentine link</h1>
+        <p class="sub">Customize the card with a name, messages, photo, song, and GIFs. Generate a link to share — the recipient gets the full experience with your choices.</p>
+        <p class="note"><strong>Only "Name" is required.</strong> Leave other fields blank to use the default text and media.</p>
+
+        <div id="form-section" class="card form-section">
+            <form id="customize-form">
+                <div class="section-title">Who it’s for</div>
+                <div class="row">
+                    <label>Name <span class="opt">(required — shown as "Hey [name]!")</span></label>
+                    <input type="text" id="name" name="name" placeholder="e.g. Priya or baby" required>
+                    <p class="hint">We add "!" after the name if you don’t. Default: baby!</p>
+                </div>
+
+                <div class="section-title">Opening & story text</div>
+                <div class="row">
+                    <label>Opening line <span class="opt">(under "Hey [name]!")</span></label>
+                    <input type="text" id="openingLine" name="openingLine" placeholder="e.g. Good Morning! I have got something for you">
+                </div>
+                <div class="row">
+                    <label>Chaos line <span class="opt">(use Enter for a new line)</span></label>
+                    <textarea id="greetingText" name="greetingText" rows="2" placeholder="Line 1: It's Valentine's Day 💕&#10;Line 2: I had two options: be basic or treat you with a whole experience. 💅"></textarea>
+                </div>
+
+                <div class="section-title">Card: photo & poem</div>
+                <div class="row">
+                    <label>Photo <span class="opt">(next to "Happy Valentine's Day Gorgeous")</span></label>
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                    <p class="hint">Replaces the default avatar. Leave empty to keep the default.</p>
+                </div>
+                <div class="row">
+                    <label>Wish / poem <span class="opt">(under the title, below the photo)</span></label>
+                    <textarea id="wishText" name="wishText" class="long" rows="6" placeholder="Your poem or message. Use Enter for line breaks. Leave blank for the default Hindi poem."></textarea>
+                </div>
+
+                <div class="section-title">Media (optional)</div>
+                <div class="row">
+                    <label>Background song</label>
+                    <input type="file" id="song" name="song" accept="audio/*">
+                    <p class="hint">Plays from the start through the whole card and the Yes page. Leave empty for the default song.</p>
+                </div>
+                <div class="row">
+                    <label>GIF on "Will you be my Valentine?" page</label>
+                    <input type="file" id="gifVday" name="gifVday" accept="image/gif,image/*">
+                    <p class="hint">Cute character above the Yes/No buttons.</p>
+                </div>
+                <div class="row">
+                    <label>GIF on "Yes" celebration page</label>
+                    <input type="file" id="gifYes" name="gifYes" accept="image/gif,image/*">
+                    <p class="hint">Shown after they click Yes.</p>
+                </div>
+
+                <p id="err" class="err"></p>
+                <button type="submit" class="btn-primary">Generate my link</button>
+            </form>
+        </div>
+
+        <div id="result-section" class="card result">
+            <h2>✅ Your link is ready!</h2>
+            <p class="sub" style="margin-bottom:12px">Share this link. It opens the full Valentine card with your customizations. Best opened in the same browser where you created the link (or the recipient may see a short notice).</p>
+            <div id="link-box" class="link-box"></div>
+            <button type="button" id="btn-copy" class="btn-copy">Copy link</button>
+            <button type="button" id="btn-open" class="btn-open">Open card</button>
+        </div>
+    </div>
+
+    <script>
+        const FORM = document.getElementById('customize-form');
+        const FORM_SECTION = document.getElementById('form-section');
+        const RESULT_SECTION = document.getElementById('result-section');
+        const LINK_BOX = document.getElementById('link-box');
+        const ERR = document.getElementById('err');
+
+        const DEFAULT_OPENING = "Good Morning! I have got something for you";
+        const DEFAULT_CHAOS = "It's Valentine's Day 💕\nI had two options: be basic or treat you with a whole experience. 💅";
+        const DEFAULT_WISH = "तू है तो लगता है कि है कोई जो मुझे चाह सकेगा,\nहाँ, मैं हूँ थोड़ा पागल, हूँ थोड़ा नासमझ,\nतेरे होने से है कोई जो मुझे मना सकेगा।\n\nतेरी आदतों में मेरी कितनी शरारतों ने घर पाया है,\nतेरे बिन ये दिल जाने कहाँ भटक जाएगा।\n\nसपनों का है एक घर मेरा, उजली सी छत वाला,\nसब कहते हैं — घर ऐसा सपनों में ही होता है।\n\nतेरे होने से ही वो घर आशियाना सा लगेगा,\nतेरे साथ ही हर लम्हा सुहाना सा रहेगा।\n\nतू है तो लगता है कि है कोई जो मुझे चाह सकेगा,\nमैं हूँ मोहब्बत के लायक बहुत —\nये कोई मुझे बता सकेगा।";
+
+        function generateId() {
+            return Math.random().toString(36).replace(/[^a-z0-9]/g, '').slice(0, 10);
+        }
+
+        function readFileAsDataUrl(file) {
+            return new Promise((resolve, reject) => {
+                const r = new FileReader();
+                r.onload = () => resolve(r.result);
+                r.onerror = reject;
+                r.readAsDataURL(file);
+            });
+        }
+
+        FORM.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            ERR.classList.remove('show');
+            ERR.textContent = '';
+
+            const name = document.getElementById('name').value.trim();
+            if (!name) {
+                ERR.textContent = 'Please enter a name.';
+                ERR.classList.add('show');
+                return;
+            }
+
+            const openingLine = document.getElementById('openingLine').value.trim();
+            const greetingText = document.getElementById('greetingText').value.trim();
+            const wishText = document.getElementById('wishText').value.trim();
+            const photoInput = document.getElementById('photo');
+            const songInput = document.getElementById('song');
+            const gifVdayInput = document.getElementById('gifVday');
+            const gifYesInput = document.getElementById('gifYes');
+
+            const config = {
+                name,
+                greetingText: greetingText || DEFAULT_CHAOS,
+                wishText: wishText || DEFAULT_WISH,
+                imagePath: 'img/vector.jpg'
+            };
+            if (openingLine) config.openingLine = openingLine;
+
+            try {
+                if (photoInput.files.length) config.photoDataUrl = await readFileAsDataUrl(photoInput.files[0]);
+                if (songInput.files.length) config.songDataUrl = await readFileAsDataUrl(songInput.files[0]);
+                if (gifVdayInput.files.length) config.gifVdayDataUrl = await readFileAsDataUrl(gifVdayInput.files[0]);
+                if (gifYesInput.files.length) config.gifYesDataUrl = await readFileAsDataUrl(gifYesInput.files[0]);
+            } catch (err) {
+                ERR.textContent = 'Failed to read a file. Try smaller files.';
+                ERR.classList.add('show');
+                return;
+            }
+
+            const id = generateId();
+            const key = 'valentine_config_' + id;
+            try {
+                localStorage.setItem(key, JSON.stringify(config));
+            } catch (e) {
+                ERR.textContent = 'Storage full. Try fewer or smaller files.';
+                ERR.classList.add('show');
+                return;
+            }
+
+            const basePath = location.pathname.replace(/customize\.html$/i, '').replace(/\/?$/, '') + '/';
+            const link = location.origin + basePath + '?v=' + id;
+            LINK_BOX.textContent = link;
+            FORM_SECTION.classList.add('hide');
+            RESULT_SECTION.classList.add('show');
+        });
+
+        document.getElementById('btn-copy').addEventListener('click', () => {
+            const text = LINK_BOX.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('btn-copy');
+                btn.textContent = 'Copied!';
+                setTimeout(() => { btn.textContent = 'Copy link'; }, 2000);
+            });
+        });
+
+        document.getElementById('btn-open').addEventListener('click', () => {
+            const link = LINK_BOX.textContent;
+            window.location.href = link;
+        });
+    </script>
+    <footer class="app-footer">Made with ❤️ by Devashish Somani © 2026</footer>
+</body>
+</html>
