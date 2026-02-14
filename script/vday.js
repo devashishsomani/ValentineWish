@@ -11,28 +11,27 @@ const gifStages = [
 
 const MAX_NO_ATTEMPTS = 20
 
-// Messages: some use {sequence_number} for current attempt count. Some fixed, some for specific ranges.
+// Sequential messages shown in order (attempts 1-19). Message 19 triggers buddy warning separately.
 const noMessages = [
-    "No",
-    "Are you sure? 🤔",
-    "Really? 😢",
+    "Wait... really? 🤔",
+    "Are you sure? 😮",
+    "Think about it... 💭",
+    "Seriously? 😢",
     "Pookie please... 🥺",
-    "If you say no,\nI'll be really sad...",
-    "Please??? 💔",
-    "After {sequence_number} no's,\nI'm still here.\nThat's commitment. 💪",
-    "You tried {sequence_number} times…\nI admire the dedication. 👏",
+    "Pretty please? 💕",
+    "Come on... 🙏",
+    "You're breaking my heart 💔",
+    "After {sequence_number} tries,\nI'm still here.\nThat's dedication! 💪",
+    "Okay, {sequence_number} times?\nI admire the commitment 👏",
     "I promise unlimited hugs\nif you press 'Yes' 🤗",
-    "AI prediction:\n99.99% chance you meant\nto press 'Yes'. 🤖",
-    "Achievement Unlocked:\nDenial Queen 👑",
-    "Scientists say pressing 'Yes'\nincreases happiness\nby 200%. 📈",
-    "Boss Level Reached.\nOnly 'Yes' can defeat me. 🎮",
-    "Denial is a river…\nbut we're not in Egypt. 🌊",
-    "Be honest…\nyour finger is tired.\nJust press Yes. 😅",
-    "You're clicking 'No'\nbut smiling, aren't you? 😏",
-    "I can do this all day.\nCan you? 💪",
-    "At this point,\nit's destiny. ✨",
-    "The universe is begging\nyou to press Yes. 🌌",
-    "One more 'No' and\nI'm sending the little buddy. 😊"
+    "AI prediction:\n99.99% chance you meant\nto press 'Yes' 🤖",
+    "Achievement Unlocked:\nDenial Expert 👑",
+    "Scientists say pressing 'Yes'\nincreases happiness\nby 200% 📈",
+    "Boss Level Reached.\nOnly 'Yes' can win 🎮",
+    "Denial is a river…\nbut we're not in Egypt 🌊",
+    "Be honest…\nyour finger is tired.\nJust press Yes 😅",
+    "You're clicking 'No'\nbut smiling,\naren't you? 😏",
+    "I can do this all day.\nCan you? 💪"
 ]
 
 // Pool of messages that can appear randomly after attempt 6 (mixed in via getNoMessage)
@@ -53,7 +52,60 @@ const noMessagesRandom = [
     "New message:\nYes is the answer.\nNo wasn't even an option. 💁",
     "Loading...\nYes unavoidable.\nPress to continue. ⏳",
     "Breaking news:\nLocal person still\nclicking No. 📰",
-    "Warning: Continued use of\nNo button may result\nin cuteness overload. 🥰"
+    "Warning: Continued use of\nNo button may result\nin cuteness overload. 🥰",
+    "System Update:\nNo button no longer\nworks. Try Yes. 🔄",
+    "Calculating...\nYes = 100% correct answer. 🧮",
+    "Google says:\nDid you mean 'Yes'? 🔎",
+    "Autocorrect:\nNo → Yes ✏️",
+    "Weather forecast:\n100% chance of\nsaying Yes soon. 🌤️",
+    "Fortune cookie says:\nYes is in your future. 🥠",
+    "Survey says:\nTop answer is Yes! 📋",
+    "GPS recalculating...\nRoute to Yes. 🗺️",
+    "Buffering...\nYes loading... ⏱️",
+    "Spellcheck:\nNo has been replaced\nwith Yes. ✔️",
+    "Battery low on No.\nSwitch to Yes. 🔋",
+    "Ctrl+Z that decision.\nPress Yes. ⌨️",
+    "Downloading happiness...\nClick Yes to install. 💾",
+    "404 Error:\nNo button not found.\nYes available. 🖥️",
+    "This is your sign.\nPress Yes. 🪧",
+    "Horoscope today:\nPress Yes for good luck. ⭐",
+    "Magic 8-ball says:\nSigns point to Yes. 🎱",
+    "Your destiny awaits.\nClick Yes. 🌟",
+    "The answer was always Yes.\nYou just didn't know yet. 💭",
+    "Resistance is futile.\nJoin the Yes side. 🤖",
+    "No is temporary.\nYes is forever. ♾️",
+    "Even your phone wants\nyou to press Yes. 📱",
+    "Wifi signal stronger\nnear Yes button. 📶",
+    "Yes button has\n5-star reviews. ⭐⭐⭐⭐⭐",
+    "Disclaimer: No button\nmay cause regret. ⚠️",
+    "Studies show:\nYes makes you cooler. 😎",
+    "Upgrade to Premium:\nPress Yes. 💎",
+    "Your mom called.\nShe said press Yes. 📞",
+    "Netflix recommendation:\nPress Yes. 🎬",
+    "Spotify suggestion:\nYes is a bop. 🎵",
+    "Instagram poll results:\n99% voted Yes. 📸",
+    "TikTok trend:\nEveryone's pressing Yes. 🎥",
+    "Reddit says:\nYes is the way. 🤓",
+    "Wikipedia confirms:\nYes is correct. 📚",
+    "Siri says:\nI found Yes for you. 🗣️",
+    "Alexa agrees:\nYou should press Yes. 🔊",
+    "Chrome is out of memory.\nPress Yes to continue. 💻",
+    "Your FBI agent\nwants you to press Yes. 🕵️",
+    "Time traveler here:\nYou pressed Yes. 🕐",
+    "Multiverse theory:\nIn all universes\nyou pressed Yes. 🌌",
+    "Quantum mechanics:\nYes and No collapsed\ninto Yes. ⚛️",
+    "Thanos snapped.\nOnly Yes survived. 💥",
+    "The chosen one\nwould press Yes. 🦸",
+    "Main character energy:\nPress Yes. ✨",
+    "Plot armor active.\nYes can't lose. 🛡️",
+    "Achievement unlocked:\nPersistence Level 100.\nReward: Press Yes. 🏅",
+    "Congratulations!\nYou've been selected\nto press Yes. 🎊",
+    "Limited time offer:\nPress Yes now! ⏰",
+    "Free trial ended.\nUpgrade to Yes. 💳",
+    "Terms and conditions:\nYou must press Yes. 📜",
+    "This message will\nself-destruct\nunless you press Yes. 💣",
+    "Last warning:\nYes is mandatory. 🚨",
+    "Executive order:\nPress Yes immediately. 📋"
 ]
 
 // Messages shown during Peep chase (more contextual)
@@ -82,11 +134,60 @@ const noMessagesChase = [
     "Running makes it\nmore fun! 🎮",
     "You're making\nthe buddy work! 💪",
     "Almost... there... 🎪",
-    "The buddy never\ngives up! 🦸"
+    "The buddy never\ngives up! 🦸",
+    "Target acquired! 🎯",
+    "Beep beep!\nBuddy coming through! 🚗",
+    "On your left! 🏃",
+    "You can run\nbut can't hide! 🙈",
+    "Buddy activated:\nChase mode ON! 🤖",
+    "Warning: Incoming! 🚨",
+    "Distance closing...\n10... 9... 8... ⏱️",
+    "Engage pursuit mode! 🚁",
+    "You're in my sights! 👁️",
+    "The hunt is on! 🎯",
+    "Buddy used Sprint.\nIt's super effective! 💨",
+    "Catch of the day:\nYou! 🎣",
+    "Where ya going? 😏",
+    "Come back here! 🏃",
+    "Stop right there! ✋",
+    "Freeze! Buddy police! 👮",
+    "You've got nowhere\nto go! 🚧",
+    "Surrounded! 🔄",
+    "The net is closing in! 🕸️",
+    "Tag, you're it! 🏷️",
+    "Marco! Polo! 🏊",
+    "Peek-a-boo!\nI see you! 👻",
+    "Ready or not,\nhere I come! 🎭",
+    "Gotcha in my radar! 📡",
+    "Heat-seeking\nbuddy engaged! 🌡️",
+    "You're on the\nwanted list! 📋",
+    "Approaching target... 🎯",
+    "ETA: 3 seconds! ⏰",
+    "This is your\nfinal lap! 🏁",
+    "Game over soon! 🎮",
+    "End of the line! 🚂",
+    "The buddy is\npowering up! ⚡",
+    "Speed boost activated! 🚀",
+    "Turbo mode: ON! 💨",
+    "You're in the\ndanger zone! ⚠️",
+    "Buddy senses\nare tingling! 🕷️",
+    "I've got you now! 😈",
+    "Nowhere to run,\nnowhere to hide! 🏃‍♀️",
+    "Checkmate! ♟️",
+    "Your move...\nOh wait, none left! 🎲",
+    "Mission: Catch you.\nStatus: In progress! 📊",
+    "Buddy is inevitable.\nLike pizza on Friday. 🍕",
+    "Resistance level:\nNot great. 📉",
+    "The buddy has\nunlimited stamina! 💪",
+    "This could've been\navoided, you know! 🤷",
+    "You chose\nthis path! 🛤️",
+    "Consequences\nare catching up! ⚖️",
+    "Should've pressed\nYes earlier! ⏮️",
+    "Hindsight is 20/20! 👓"
 ]
 
 function getRandomMessageWithVariety(pool) {
-    // Pick a random message that's not in the last 4 messages shown (increased gap)
+    // Pick a random message that's not in the last 8 messages shown (increased gap for more variety)
     const availableMessages = pool.filter(m => !lastMessages.includes(m))
 
     // If we've shown too many messages and filtered them all, reset history
@@ -97,9 +198,9 @@ function getRandomMessageWithVariety(pool) {
 
     const selected = availableMessages[Math.floor(Math.random() * availableMessages.length)]
 
-    // Track last 4 messages to avoid repetition (increased from 3)
+    // Track last 8 messages to avoid repetition (increased from 4)
     lastMessages.push(selected)
-    if (lastMessages.length > 4) {
+    if (lastMessages.length > 8) {
         lastMessages.shift()
     }
 
@@ -140,7 +241,7 @@ function getNoMessage(attemptNum) {
         const msgTemplate = msg  // Store before replacement
         if (!lastMessages.includes(msgTemplate)) {
             lastMessages.push(msgTemplate)
-            if (lastMessages.length > 4) {
+            if (lastMessages.length > 8) {
                 lastMessages.shift()
             }
         }
@@ -160,10 +261,97 @@ function getChaseMessage() {
 }
 
 const yesTeasePokes = [
-    "try saying no first... I bet you want to know what happens 😏",
-    "go on, hit no... just once 👀",
-    "you're missing out 😈",
-    "click no, I dare you 😏"
+    "wait wait... try No first! 😏",
+    "hold up! No button has surprises 🎁",
+    "you're missing the fun part 😈",
+    "No button is literally right there 👈",
+    "patience! Try No first 🙏",
+    "but the No button is so lonely 🥺",
+    "come on, live a little! Press No 🎉",
+    "you're skipping the best part! 🎢",
+    "No first, trust me on this 😉",
+    "not so fast, speedy! 🛑",
+    "everyone picks Yes. Be different! 🦄",
+    "No button: am I a joke to you? 🤡",
+    "the journey matters! Try No first 🗺️",
+    "No button worked hard for this moment 💪",
+    "you're gonna regret skipping No 😏",
+    "shortcuts are boring! Go for No 🛤️",
+    "give No button some love first 💕",
+    "plot twist awaits in No button 📚",
+    "No button has feelings too, you know 😤",
+    "too predictable! Click No instead 🎲",
+    "No button trained for this all week 🎭",
+    "you wouldn't skip the beginning, would you? 🎬",
+    "imagine skipping the appetizer! 🍽️",
+    "No button is the main character here 🌟",
+    "there's a whole show in No button 🎪",
+    "okay but No button does tricks ✨",
+    "think of No button's feelings! 💭",
+    "No button spent hours preparing 💄",
+    "you're breaking No button's heart 💔",
+    "press No or it'll cry 😢",
+    "No button: what am I, chopped liver? 🥩",
+    "No button has abandonment issues 😭",
+    "No button will remember this betrayal 👀",
+    "you're really just gonna skip No? 😮",
+    "the audacity! No button is right there 😤",
+    "rude! At least try No first 🙄",
+    "No button is judging you right now 👁️",
+    "you're hurting No button's feelings 🥺",
+    "No button didn't sign up for this 😭",
+    "No button expected better from you 💔",
+    "okay wow, just ignoring No button? 🤨",
+    "No button is taking notes 📝",
+    "this is No button's villain origin story 😈",
+    "you're on No button's naughty list now 📋",
+    "No button is writing in its diary about this 📖",
+    "No button will tell everyone about this 📢",
+    "the disrespect! No button is shook 😱",
+    "No button is having an existential crisis 🤯",
+    "you just made No button sad 😞",
+    "No button is questioning everything now 🤔",
+    "great, now No button needs therapy 🛋️",
+    "No button's confidence is shattered 💔",
+    "you really did No button dirty 😤",
+    "No button is writing a strongly worded letter ✉️",
+    "the nerve! No button is speechless 😶",
+    "No button is filing a complaint 📄",
+    "you're in No button's bad books now 📚",
+    "No button expected more from you 😔",
+    "way to make No button feel useless 🙃",
+    "No button is rethinking its life choices 💭",
+    "ouch! Right in front of No button's salad? 🥗",
+    "No button is not mad, just disappointed 😞",
+    "imagine being No button right now 😢",
+    "No button is feeling very attacked rn 🎯",
+    "that's it, No button is done ✋",
+    "No button didn't ask to be born 😭",
+    "you could've at least pretended to consider No 🎭",
+    "No button is gonna need a minute 😮‍💨",
+    "harsh! No button felt that 💔",
+    "No button is adding this to the list 📜",
+    "No button is planning its revenge 😈",
+    "you just made an enemy of No button ⚔️",
+    "No button will outlive you. Think about that. ⏳",
+    "the betrayal! No button is shaken 😨",
+    "No button is telling its friends about this 🗣️",
+    "you're gonna be No button's 13th reason 📼",
+    "No button is stress eating now 🍪",
+    "No button's therapist is busy tonight 📞",
+    "No button is side-eyeing you hard 👀",
+    "the shade! No button can't believe this 😤",
+    "you really chose violence today 💥",
+    "No button is sending bad vibes your way ✨",
+    "No button is unfriending you 🚫",
+    "you're canceled by No button 🚨",
+    "No button is writing an exposé 📰",
+    "No button's trust issues just got worse 💔",
+    "you validated No button's worst fears 😱",
+    "No button is sobbing in the corner now 😭",
+    "No button expected nothing and is still disappointed 🤦",
+    "you really showed your true colors 🎨",
+    "No button is taking this personally 😤"
 ]
 
 let yesTeasedCount = 0
@@ -184,6 +372,7 @@ let lastRunAwayTime = 0  // Track last time runAway was called to prevent rapid 
 let lastCursorX = 0      // Track cursor position to detect intentional movement
 let lastCursorY = 0
 let cursorMoved = true   // Track if cursor has moved since last interaction
+let runawayCount = 0     // Track how many times button has run away during chase
 
 const STICK_FIGURE_WARNING = "⚠️ Last chance! The little buddy is coming... 😊🎁💕"
 
@@ -478,6 +667,11 @@ function runAway() {
 
     noAttemptCount++
 
+    // Track runaway count during chase for buddy avoidance logic
+    if (chaseActive) {
+        runawayCount++
+    }
+
     // Show warning on 19th attempt (hover/touch)
     if (noAttemptCount === MAX_NO_ATTEMPTS - 1 && !pendingStickFigure) {
         showStickFigureWarning()
@@ -520,24 +714,38 @@ function runAway() {
     const currentRect = noBtn.getBoundingClientRect()
     const currentX = currentRect.left
     const currentY = currentRect.top
-    // Require significant movement distance, especially during chase
+    // Require significant movement distance - button should jump far!
     const MIN_MOVE_DISTANCE = chaseActive
-      ? (isMobile ? 200 : 300)  // Move even farther during chase
-      : (isMobile ? 150 : 200)
+      ? (isMobile ? 250 : 400)  // Very far during chase
+      : (isMobile ? 200 : 350)  // Far during normal runaway
 
     const yesRect = yesBtn.getBoundingClientRect()
-    const pad = isMobile ? 15 : 20
-    const avoidLeft = yesRect.left - pad
-    const avoidRight = yesRect.right + pad
-    const avoidTop = yesRect.top - pad
-    const avoidBottom = yesRect.bottom + pad
+    // ALWAYS avoid Yes button with significant padding - this is MANDATORY
+    const yesPad = isMobile ? 20 : 30
+    const avoidLeft = yesRect.left - yesPad
+    const avoidRight = yesRect.right + yesPad
+    const avoidTop = yesRect.top - yesPad
+    const avoidBottom = yesRect.bottom + yesPad
 
     // If chase is active, get buddy position to avoid
-    // Use smaller radius on mobile so button doesn't get trapped
+    // Initial chase: large avoidance radius (careful movement)
+    // After 10+ runaway attempts: much smaller radius (riskier, can get close by chance)
     let buddyLeft = -1000, buddyRight = -1000, buddyTop = -1000, buddyBottom = -1000
-    const BUDDY_AVOID_RADIUS = isMobile ? 120 : 200
+    let BUDDY_AVOID_RADIUS
 
     if (chaseActive && takerPosition) {
+        // Start with large avoidance, reduce after significant attempts
+        if (runawayCount < 10) {
+            // Initial chase: stay far from buddy
+            BUDDY_AVOID_RADIUS = isMobile ? 150 : 250
+        } else if (runawayCount < 20) {
+            // Mid-game: moderate avoidance
+            BUDDY_AVOID_RADIUS = isMobile ? 100 : 150
+        } else {
+            // Late game: minimal avoidance, can get close by chance
+            BUDDY_AVOID_RADIUS = isMobile ? 60 : 80
+        }
+
         buddyLeft = takerPosition.x - BUDDY_AVOID_RADIUS
         buddyRight = takerPosition.x + 50 + BUDDY_AVOID_RADIUS
         buddyTop = takerPosition.y - BUDDY_AVOID_RADIUS
@@ -547,11 +755,40 @@ function runAway() {
     let randomX = minX
     let randomY = maxY
     let found = false
+    let bestDistance = 0
+    let bestX = minX
+    let bestY = maxY
 
-    // Try many times to find a good position that's far enough
-    for (let tries = 0; tries < 50; tries++) {
-        const x = minX + Math.random() * (maxX - minX)
-        const y = minY + Math.random() * (maxY - minY)
+    // Try many times and pick the FARTHEST valid position (not just first valid)
+    for (let tries = 0; tries < 60; tries++) {
+        let x, y
+
+        // 50% chance to prefer edge/corner positions for more dramatic movement
+        if (Math.random() < 0.5) {
+            // Pick a random edge or corner
+            const edge = Math.floor(Math.random() * 4)
+            if (edge === 0) {
+                // Top edge
+                x = minX + Math.random() * (maxX - minX)
+                y = minY + Math.random() * 100
+            } else if (edge === 1) {
+                // Right edge
+                x = maxX - Math.random() * 100
+                y = minY + Math.random() * (maxY - minY)
+            } else if (edge === 2) {
+                // Bottom edge
+                x = minX + Math.random() * (maxX - minX)
+                y = maxY - Math.random() * 100
+            } else {
+                // Left edge
+                x = minX + Math.random() * 100
+                y = minY + Math.random() * (maxY - minY)
+            }
+        } else {
+            // Random position anywhere
+            x = minX + Math.random() * (maxX - minX)
+            y = minY + Math.random() * (maxY - minY)
+        }
         const noRight = x + btnW
         const noBottom = y + btnH
 
@@ -560,11 +797,11 @@ function runAway() {
             Math.pow(x - currentX, 2) + Math.pow(y - currentY, 2)
         )
 
-        // Check if overlaps with Yes button
+        // CRITICAL: Check if overlaps with Yes button (NEVER allow overlap - MANDATORY)
         const overlapsYes = (x < avoidRight && noRight > avoidLeft) &&
                            (y < avoidBottom && noBottom > avoidTop)
 
-        // Check if too close to buddy
+        // Check if too close to buddy (avoidance reduces over time, can get close by chance later)
         const nearBuddy = chaseActive && takerPosition &&
                          (x < buddyRight && noRight > buddyLeft) &&
                          (y < buddyBottom && noBottom > buddyTop)
@@ -572,24 +809,80 @@ function runAway() {
         // Ensure button moves far enough away from current position
         const farEnough = distanceFromCurrent >= MIN_MOVE_DISTANCE
 
+        // MUST satisfy ALL conditions: never overlap Yes, respect buddy radius, move far enough
         if (!overlapsYes && !nearBuddy && farEnough) {
-            randomX = x
-            randomY = y
-            found = true
-            break
+            if (distanceFromCurrent > bestDistance) {
+                bestDistance = distanceFromCurrent
+                bestX = x
+                bestY = y
+                found = true
+            }
         }
     }
 
+    // Use the farthest position found
+    if (found) {
+        randomX = bestX
+        randomY = bestY
+    }
+
     if (!found) {
-        // Fallback: move to opposite side of screen from buddy
+        // Fallback: move to opposite corner/edge of screen for maximum distance
         if (chaseActive && takerPosition) {
+            // Move to corner opposite from buddy
             const buddyCenterX = takerPosition.x + 25
             const buddyCenterY = takerPosition.y + 50
             randomX = buddyCenterX > window.innerWidth / 2 ? minX : Math.max(minX, maxX - margin)
             randomY = buddyCenterY > window.innerHeight / 2 ? minY : Math.max(minY, maxY - margin)
         } else {
-            randomX = minX + Math.random() * (maxX - minX)
-            randomY = minY + Math.random() * (maxY - minY)
+            // Move to corner opposite from current position
+            const currentCenterX = currentX + btnW / 2
+            const currentCenterY = currentY + btnH / 2
+            const screenCenterX = window.innerWidth / 2
+            const screenCenterY = window.innerHeight / 2
+
+            // Pick opposite quadrant with randomization
+            const randomOffset = 50 + Math.random() * 100  // Random offset 50-150px from corner
+
+            if (currentCenterX < screenCenterX && currentCenterY < screenCenterY) {
+                // Currently top-left, move to bottom-right area
+                randomX = Math.max(minX, maxX - randomOffset)
+                randomY = Math.max(minY, maxY - randomOffset)
+            } else if (currentCenterX >= screenCenterX && currentCenterY < screenCenterY) {
+                // Currently top-right, move to bottom-left area
+                randomX = Math.min(maxX, minX + randomOffset)
+                randomY = Math.max(minY, maxY - randomOffset)
+            } else if (currentCenterX < screenCenterX && currentCenterY >= screenCenterY) {
+                // Currently bottom-left, move to top-right area
+                randomX = Math.max(minX, maxX - randomOffset)
+                randomY = Math.min(maxY, minY + randomOffset)
+            } else {
+                // Currently bottom-right, move to top-left area
+                randomX = Math.min(maxX, minX + randomOffset)
+                randomY = Math.min(maxY, minY + randomOffset)
+            }
+        }
+
+        // CRITICAL: Final check - ensure fallback position doesn't overlap Yes button
+        const finalNoRight = randomX + btnW
+        const finalNoBottom = randomY + btnH
+        const finalOverlapsYes = (randomX < avoidRight && finalNoRight > avoidLeft) &&
+                                 (randomY < avoidBottom && finalNoBottom > avoidTop)
+
+        // If fallback overlaps Yes, shift it away from Yes button
+        if (finalOverlapsYes) {
+            // Determine which direction to shift based on Yes button position
+            const yesCenterX = (avoidLeft + avoidRight) / 2
+            const yesCenterY = (avoidTop + avoidBottom) / 2
+
+            // Shift to farthest edge from Yes button
+            if (randomX < yesCenterX) {
+                // Button is left of Yes, move further left
+                randomX = Math.max(minX, avoidLeft - btnW - 20)
+            } else {
+                // Button is right of Yes, move further right
+                randomX = Math.min(maxX, avoidRight + 20)
+            }
         }
     }
 
@@ -625,6 +918,7 @@ function triggerStickFigureTakeaway() {
     cursorMoved = false
     justMoved = true
     justClicked = false
+    runawayCount = 0  // Reset runaway counter for chase phase
     lastRunAwayTime = Date.now() // Prevent immediate runAway via time throttling
     // Set cooldown to prevent immediate runAway calls when buddy starts
     setTimeout(() => { justMoved = false }, 1000)

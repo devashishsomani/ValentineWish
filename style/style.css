@@ -698,6 +698,19 @@ body {
   overflow-wrap: break-word;
 }
 
+.nine p.drumroll-emoji {
+  font-size: clamp(3rem, 12vmin, 6rem);
+  margin-top: 1rem;
+  font-weight: normal;
+  letter-spacing: 0.5rem;
+  animation: drumroll-bounce 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes drumroll-bounce {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-8px) scale(1.1); }
+}
+
 #replay {
   z-index: 3;
   cursor: pointer;
@@ -754,6 +767,11 @@ body {
   .five p { font-size: clamp(1rem, 2.8vmin, 1.5rem); }
   .five .idea-5 { font-size: clamp(1.4rem, 4.5vmin, 2.2rem); }
   .nine p { font-size: clamp(0.85rem, 2.5vmin, 1.2rem); }
+
+  .nine p.drumroll-emoji {
+    font-size: clamp(2.2rem, 9.5vmin, 4.2rem);
+    letter-spacing: 0.3rem;
+  }
 }
 
 /* Mobile portrait — ensure comfortable reading and tap targets */
@@ -828,6 +846,11 @@ body {
 
   .nine p {
     font-size: 1.7rem;
+  }
+
+  .nine p.drumroll-emoji {
+    font-size: clamp(2.8rem, 11vmin, 5rem);
+    letter-spacing: 0.4rem;
   }
 
   .start-play-btn {
@@ -936,6 +959,11 @@ body {
     font-weight: lighter;
   }
 
+  .nine p.drumroll-emoji {
+    font-size: clamp(2.5rem, 10vmin, 4.5rem);
+    letter-spacing: 0.3rem;
+  }
+
   .start-play-btn {
     width: clamp(36px, 9vmin, 40px);
     height: clamp(36px, 9vmin, 40px);
@@ -1007,6 +1035,11 @@ body {
 
   .nine p {
     font-size: clamp(0.85rem, 2.5vmin, 1.1rem);
+  }
+
+  .nine p.drumroll-emoji {
+    font-size: clamp(2rem, 9vmin, 4rem);
+    letter-spacing: 0.25rem;
   }
 }
 
