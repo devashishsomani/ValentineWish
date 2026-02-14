@@ -114,6 +114,7 @@
     margin-top: clamp(16px, 4vmin, 30px);
     flex-wrap: wrap;
     padding: 0 4vw;
+    width: 100%;
 }
 
 #vday-app #yes-btn {
@@ -129,6 +130,11 @@
     padding: clamp(12px, 3vmin, 18px) clamp(24px, 8vmin, 45px);
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.15s;
+    margin: 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     box-shadow: 0 6px 20px rgba(76, 175, 80, 0.45);
     letter-spacing: 1px;
     box-sizing: border-box;
@@ -230,7 +236,8 @@
     }
 }
 
-#vday-app #music-toggle {
+#vday-app #music-toggle,
+#yes-app #music-toggle {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -247,7 +254,8 @@
     z-index: 100;
 }
 
-#vday-app #music-toggle:hover {
+#vday-app #music-toggle:hover,
+#yes-app #music-toggle:hover {
     transform: scale(1.1);
 }
 
@@ -257,8 +265,23 @@
         flex-wrap: wrap;
         justify-content: center;
     }
-    #vday-app #music-toggle {
-        bottom: calc(max(12px, 2vmin) + env(safe-area-inset-bottom, 0));
+    #vday-app #music-toggle,
+    #yes-app #music-toggle {
+        bottom: calc(45px + env(safe-area-inset-bottom, 0));
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    #vday-app #music-toggle,
+    #yes-app #music-toggle {
+        bottom: calc(40px + env(safe-area-inset-bottom, 0));
+        right: calc(8px + env(safe-area-inset-right, 0));
+        width: 38px;
+        height: 38px;
+        font-size: 0.95rem;
     }
 }
 
@@ -777,4 +800,23 @@ body.yes-page #music-toggle {
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     z-index: 100;
+}
+
+@media screen and (max-width: 768px) {
+    body.yes-page #music-toggle {
+        bottom: calc(45px + env(safe-area-inset-bottom, 0));
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    body.yes-page #music-toggle {
+        bottom: calc(40px + env(safe-area-inset-bottom, 0));
+        right: calc(8px + env(safe-area-inset-right, 0));
+        width: 38px;
+        height: 38px;
+        font-size: 0.95rem;
+    }
 }

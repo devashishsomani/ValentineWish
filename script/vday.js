@@ -66,6 +66,27 @@ const noMessagesChase = [
     "Too slow! ⚡"
 ]
 
+function getRandomMessageWithVariety(pool) {
+    // Pick a random message that's not in the last 3 messages shown
+    const availableMessages = pool.filter(m => !lastMessages.includes(m))
+
+    // If we've shown too many messages and filtered them all, reset history
+    if (availableMessages.length === 0) {
+        lastMessages = []
+        return pool[Math.floor(Math.random() * pool.length)]
+    }
+
+    const selected = availableMessages[Math.floor(Math.random() * availableMessages.length)]
+
+    // Track last 3 messages to avoid repetition
+    lastMessages.push(selected)
+    if (lastMessages.length > 3) {
+        lastMessages.shift()
+    }
+
+    return selected
+}
+
 function getNoMessage(attemptNum) {
     const oneBased = Math.max(1, attemptNum)
     let msg
@@ -78,17 +99,17 @@ function getNoMessage(attemptNum) {
         if (!runawayEnabled) {
             msg = noMessages[noMessages.length - 1]
         } else {
-            // If runaway already enabled, show random message instead
-            msg = noMessagesRandom[Math.floor(Math.random() * noMessagesRandom.length)]
+            // If runaway already enabled, show random message with variety
+            msg = getRandomMessageWithVariety(noMessagesRandom)
         }
     } else {
-        // After all sequential messages, show random
-        msg = noMessagesRandom[Math.floor(Math.random() * noMessagesRandom.length)]
+        // After all sequential messages, show random with variety
+        msg = getRandomMessageWithVariety(noMessagesRandom)
     }
 
     // Mix in random messages after attempt 7
     if (oneBased >= 7 && oneBased < MAX_NO_ATTEMPTS && Math.random() < 0.35) {
-        msg = noMessagesRandom[Math.floor(Math.random() * noMessagesRandom.length)]
+        msg = getRandomMessageWithVariety(noMessagesRandom)
     }
 
     return msg.replace(/\{sequence_number\}/g, String(oneBased))
@@ -101,8 +122,7 @@ function getRandomNoMessage() {
 }
 
 function getChaseMessage() {
-    const msg = noMessagesChase[Math.floor(Math.random() * noMessagesChase.length)]
-    return msg
+    return getRandomMessageWithVariety(noMessagesChase)
 }
 
 const yesTeasePokes = [
@@ -123,6 +143,8 @@ let noButtonGone = false
 let pendingStickFigure = false
 let chaseActive = false
 let takerPosition = null  // Track buddy position during chase
+let lastMessages = []  // Track last few messages to avoid repetition
+let justClicked = false  // Prevent immediate runaway after click
 
 const STICK_FIGURE_WARNING = "⚠️ Last chance! The little buddy is coming... 😊🎁💕"
 
@@ -255,11 +277,16 @@ function updateNoButtonText() {
 
 function handleNoClick() {
     if (noButtonGone) return
+
+    // Set flag to prevent immediate runaway after click
+    justClicked = true
+    setTimeout(() => { justClicked = false }, 600)
+
     noClickCount++
     noAttemptCount++
     updateNoButtonText()
 
-    // Grow Yes button on each No, but cap so it stays usable and doesn’t overflow
+    // Grow Yes button on each No, but cap so it stays usable and doesn't overflow
     const baseSize = parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16
     const maxYesFont = Math.min(baseSize * 1.75, 28)
     const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize) || baseSize * 1.1
@@ -297,23 +324,52 @@ function swapGif(src) {
 
 function enableRunaway() {
     if (!noBtn) return
-    runawayListenersActive = true
     // Slower, smoother glide when the No button runs away from hover/touch
     noBtn.style.transition = 'left 2s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-    noBtn.addEventListener('mouseover', runAway)
-    noBtn.addEventListener('touchstart', runAway, { passive: true })
+
+    // Add a delay before activating listeners to prevent immediate trigger
+    // This prevents the button from moving while user's finger/cursor is still over it from the click
+    setTimeout(() => {
+        if (noButtonGone) return
+        runawayListenersActive = true
+        // Use mouseenter instead of mouseover - fires once when entering, not continuously
+        noBtn.addEventListener('mouseenter', runAway)
+        // For mobile: use a wrapper to ensure touch is intentional
+        noBtn.addEventListener('touchstart', handleTouchRunaway, { passive: false })
+    }, 500)  // Increased delay to 500ms to ensure user has lifted finger
+}
+
+function handleTouchRunaway(e) {
+    // Only run away if the button is actually being touched (not a scroll or accidental touch)
+    // and the touch started on the button itself
+    if (!runawayListenersActive || noButtonGone || justClicked) return
+
+    // Get the touch point
+    const touch = e.touches[0]
+    const rect = noBtn.getBoundingClientRect()
+
+    // Verify the touch is actually within the button bounds
+    const touchX = touch.clientX
+    const touchY = touch.clientY
+
+    if (touchX >= rect.left && touchX <= rect.right &&
+        touchY >= rect.top && touchY <= rect.bottom) {
+        // Prevent default to avoid any scroll behavior
+        e.preventDefault()
+        runAway()
+    }
 }
 
 function disableRunaway() {
     if (!noBtn || !runawayListenersActive) return
     runawayListenersActive = false
     noBtn.style.transition = 'none'
-    noBtn.removeEventListener('mouseover', runAway)
-    noBtn.removeEventListener('touchstart', runAway)
+    noBtn.removeEventListener('mouseenter', runAway)
+    noBtn.removeEventListener('touchstart', handleTouchRunaway)
 }
 
 function runAway() {
-    if (noButtonGone || !runawayListenersActive) return
+    if (noButtonGone || !runawayListenersActive || justClicked) return
 
     noAttemptCount++
     // Don't update text on hover - text only changes on actual clicks
