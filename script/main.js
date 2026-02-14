@@ -386,13 +386,20 @@ const animationTimeline = () => {
       [],
       "+=0.2"
     )
-    .staggerFrom(
+    .staggerFromTo(
       ".eight svg",
       1,
       {
         scale: 0,
         opacity: 0,
         rotation: -180,
+        visibility: "visible",
+      },
+      {
+        scale: 1,
+        opacity: 1,
+        rotation: 0,
+        visibility: "visible",
         ease: Back.easeOut,
       },
       0.1,
